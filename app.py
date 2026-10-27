@@ -1,12 +1,16 @@
+import os
 from flask import Flask
+
 app = Flask(__name__)
-html_code = """
+
+@app.route('/')
+def home(): return """
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>آینده</title>
+<title>آینده از اینجا شروع می‌شود</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,14 +30,12 @@ p { font-size: 1.2rem; color: #a0a0a0; line-height: 2; font-weight: 300; }
 <div class="orb-2"></div>
 <div class="card">
 <h1>آینده از اینجا شروع می‌شود</h1>
-<p>من این وب‌سایت را در سال ۲۰۲۶ ساختم.<br>این طراحی با فناوری <b>Glassmorphism</b> و افکت‌های نوری، تا ده سال آینده هم نوآورانه و خاص باقی خواهد ماند.</p>
+<p>من این وب‌سایت را ساختم تا به دنیا نشان دهم.<br>این طراحی با فناوری <b>Glassmorphism</b> تا ده سال آینده هم مدرن و خاص خواهد بود.</p>
 </div>
 </body>
 </html>
 """
-@app.route('/')
-def home(): return html_code
-import os
+
 if __name__ == '__main__':
 port = int(os.environ.get('PORT', 5000))
 app.run(host='0.0.0.0', port=port)

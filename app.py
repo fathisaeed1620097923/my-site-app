@@ -9,5 +9,5 @@ def home(): return HTML + "".join([f'<div class="msg"><b>{m["name"]}</b> ({m["da
 @app.route('/add', methods=['POST'])
 def add(): messages.append({'name': request.form['name'], 'message': request.form['message'], 'date': request.form['date']}); return redirect(url_for('home'))
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5000))
 app.run(host='0.0.0.0', port=port)

@@ -98,12 +98,12 @@ def dashboard():
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-emotion = analyze_emotion(request.form['message'])
-db.session.add(Feedback(message=request.form['message'], emotion=emotion))
-db.session.commit()
-return f"<h1>SAVED: {emotion}</h1>"
-return HTML_FEEDBACK
+    if request.method == 'POST':
+        emotion = analyze_emotion(request.form['message'])
+        db.session.add(Feedback(message=request.form['message'], emotion=emotion))
+        db.session.commit()
+        return f"<h1>SAVED: {emotion}</h1>"
+    return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():

@@ -1,4 +1,5 @@
 
+
 import os
 import random
 import string
@@ -22,10 +23,12 @@ id = db.Column(db.Integer, primary_key=True)
 username = db.Column(db.String(100), unique=True, nullable=False)
 password = db.Column(db.String(200), nullable=False)
 name = db.Column(db.String(150), nullable=False)
+industry = db.Column(db.String(50), nullable=False)
 unique_code = db.Column(db.String(10), unique=True, nullable=False)
 
 class Feedback(db.Model):
 id = db.Column(db.Integer, primary_key=True)
+customer_name = db.Column(db.String(100), nullable=False)
 message = db.Column(db.Text, nullable=False)
 emotion = db.Column(db.String(50), nullable=False)
 
@@ -70,25 +73,26 @@ HTML_HOME = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """</style></head><body>
 <div class='hud-container'>
 <h1>OMNI-PLATFORM</h1>
+<p style='text-align:center;color:#88ccff;'>QUANTUM BUSINESS & TIME CAPSULE</p>
 <a href='/login'><button>ورود کسب‌وکارها</button></a>
-<a href='/feedback'><button style='background:transparent;border:1px solid #00ffcc'>ثبت بازخورد</button></a>
+<a href='/feedback'><button style='background:transparent;border:1px solid #00ffcc'>ثبت بازخورد (مشتری)</button></a>
 <a href='/time-capsule'><button style='background:transparent;border:1px solid #ff0080;color:#ff0080'>کپسول زمان</button></a>
-<a href='/memory-portal'><button style='background:transparent;border:1px dashed #ff0080;color:#ff0080'>پورتال خاطرات</button></a>
+<a href='/memory-portal'><button style='background:transparent;border:1px dashed #ff0080;color:#ff0080'>پورتال خاطرات (چت با گذشته)</button></a>
 </div>
 </body></html>
 """
 
-HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>LOGIN</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
+HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS SYSTEM</button></form><a href='/register'>NEW USER REGISTRATION</a></div></body></html>"
 
-HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>REGISTER</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
+HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='MISSION NAME (نام کسب‌وکار)' required><input type='text' name='industry' placeholder='INDUSTRY (صنف)' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INITIALIZE</button></form></div></body></html>"
 
-HTML_DASHBOARD = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>DASHBOARD</h1><h3>CODE: {{ code }}</h3>{% for f in feedbacks %}<div class='msg'>{{ f.emotion }}: {{ f.message }}</div>{% endfor %}<a href='/logout'>LOGOUT</a></div></body></html>"
+HTML_DASHBOARD = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>MISSION LOG</h1><h3 style='color:#88ccff;'>CODE: {{ code }}</h3>{% for f in feedbacks %}<div class='msg'><span style='color:#00ffcc;'>[{{ f.emotion }}]</span> {{ f.customer_name }}: {{ f.message }}</div>{% endfor %}<a href='/logout'>DISCONNECT SYSTEM</a></div></body></html>"
 
-HTML_FEEDBACK = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>SEND SIGNAL</h1><form method='POST'><input type='text' name='code' placeholder='CODE' required><textarea name='message' placeholder='MESSAGE' required></textarea><button type='submit'>SEND</button></form></div></body></html>"
+HTML_FEEDBACK = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>SEND SIGNAL</h1><form method='POST'><input type='text' name='code' placeholder='TARGET CODE' required><input type='text' name='customer_name' placeholder='AGENT NAME' required><textarea name='message' placeholder='TRANSMISSION TEXT...' required></textarea><button type='submit'>TRANSMIT</button></form></div></body></html>"
 
-HTML_CAPSULE = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{% for c in capsules %}<div class='msg'>{{ c.name }}: {{ c.message }}</div>{% endfor %}<a href='/'>BACK</a></div></body></html>"
+HTML_CAPSULE = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1 style='color:#ff0080;'>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE FOR FUTURE...' required></textarea><input type='date' name='date' required><button type='submit' style='background:#ff0080;color:#fff;'>LOCK</button></form>{% for c in capsules %}<div class='msg' style='border-left-color:#ff0080;'><b>{{ c.name }}</b> ({{ c.date }}):<br>{{ c.message }}</div>{% endfor %}<a href='/'>BACK</a></div></body></html>"
 
-HTML_PORTAL = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>MEMORY PORTAL</h1><div class='chat-box'>{% for c in chats %}<div class='chat-msg chat-user'>{{ c.user }}</div><div class='chat-msg chat-ai'>{{ c.ai }}</div>{% endfor %}</div><form method='POST'><input type='text' name='message' placeholder='TALK TO PAST...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
+HTML_PORTAL = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1 style='color:#ff0080;'>MEMORY PORTAL</h1><div class='chat-box'>{% for c in chats %}<div class='chat-msg chat-user'>{{ c.user }}</div><div class='chat-msg chat-ai'>{{ c.ai }}</div>{% endfor %}</div><form method='POST'><input type='text' name='message' placeholder='TALK TO PAST...' required><button type='submit' style='background:#ff0080;color:#fff;'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
 
 @app.route('/')
 def index(): return HTML_HOME
@@ -97,9 +101,9 @@ def index(): return HTML_HOME
 def register():
 if request.method == 'POST':
 code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-new_biz = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
+new_biz = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], industry=request.form['industry'], unique_code=code)
 db.session.add(new_biz); db.session.commit()
-return f"<h1>YOUR CODE: {code}</h1>"
+return f"<h1 style='color:#00ffcc;text-align:center;'>YOUR CODE: {code}</h1>"
 return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -125,8 +129,8 @@ return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, fee
 def feedback():
 if request.method == 'POST':
 emotion = analyze_emotion(request.form['message'])
-db.session.add(Feedback(message=request.form['message'], emotion=emotion)); db.session.commit()
-return f"<h1>SAVED: {emotion}</h1>"
+db.session.add(Feedback(customer_name=request.form['customer_name'], message=request.form['message'], emotion=emotion)); db.session.commit()
+return f"<h1 style='color:#00ffcc;text-align:center;'>SAVED: {emotion}</h1>"
 return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])

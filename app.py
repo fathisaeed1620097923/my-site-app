@@ -1,3 +1,4 @@
+به من
 
 import os
 import random
@@ -8,7 +9,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'quantum-ultimate-2026'
+app.config['SECRET_KEY'] = 'future-2526'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:uV9l6wSZRt2WYBDkGv6FSlQEIe3L6LlY@dpg-dbghkgl9el5s73b10u1g-a.frankfurt-postgres.render.com/mydb_gb4s'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -50,38 +51,32 @@ if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
 if "خوشحال" in text: return "شادی تو عالیه!"
 return "من به تو گوش می‌دهم."
 
-# --- افکت 3D Tilt و ظاهر جنگ ستارگان ---
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Vazirmatn', Tahoma; background-color: #02040a; background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px); background-size: 30px 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #00ffcc; overflow: hidden; perspective: 1000px; }
-.hud-container { background: rgba(2, 10, 20, 0.85); border: 1px solid #00ffcc; padding: 40px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); transition: transform 0.1s ease-out; transform-style: preserve-3d; }
-.hud-container::before { content: 'SYSTEM ONLINE // SECURE CONNECTION'; position: absolute; top: -12px; left: 20px; background: #02040a; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #00ffcc; letter-spacing: 1px; }
-h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); margin-bottom: 20px; text-align: center; letter-spacing: 3px; transform: translateZ(50px); }
-input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); color: #00ffcc; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; transform: translateZ(30px); }
-button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
-a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; transform: translateZ(20px); }
-.msg { background: rgba(0, 255, 204, 0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 15px; transform: translateZ(10px); }
+body { font-family: 'Vazirmatn', Tahoma; background: #000; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #fff; overflow: hidden; position: relative; }
+.blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.7; animation: morph 8s ease-in-out infinite; }
+.blob1 { width: 400px; height: 400px; background: #ff0080; top: -100px; left: -100px; }
+.blob2 { width: 500px; height: 500px; background: #00f2fe; bottom: -150px; right: -100px; animation-delay: 2s; }
+.blob3 { width: 300px; height: 300px; background: #4facfe; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 4s; }
+@keyframes morph { 0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(0, 0) scale(1); } 34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; transform: translate(30px, -50px) scale(1.1); } 67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; transform: translate(-20px, 20px) scale(0.9); } }
+.hud-container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 50px; width: 100%; max-width: 600px; border-radius: 40px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); text-align: center; z-index: 10; }
+h1 { font-size: 3rem; font-weight: 700; margin-bottom: 30px; background: linear-gradient(90deg, #fff, #a0a0a0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+input, textarea, button { width: 100%; padding: 18px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; border-radius: 15px; font-family: 'Vazirmatn', Tahoma; outline: none; transition: 0.4s; }
+button { background: #fff; color: #000; cursor: pointer; font-weight: bold; border-radius: 50px; }
+button:hover { background: #ff0080; color: #fff; transform: scale(1.05); }
+a { color: #fff; text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; opacity: 0.8; transition: 0.3s; }
+a:hover { opacity: 1; text-shadow: 0 0 10px #fff; }
+.msg { background: rgba(255, 255, 255, 0.05); border-left: 4px solid #fff; padding: 15px; margin-top: 15px; border-radius: 10px; text-align: right; }
 """
 
-JS = """
-document.addEventListener('mousemove', (e) => {
-const card = document.querySelector('.hud-container');
-if (!card) return;
-const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-});
-"""
-
-HTML_HOME = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container' id='card'><h1>OMNI-PLATFORM</h1><a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div><script>" + JS + "</script></body></html>"
-
-HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
-HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
-HTML_DASHBOARD = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>DASHBOARD</h1><h3>CODE: {{ code }}</h3>{% for f in feedbacks %}<div class='msg'>{{ f.emotion }}: {{ f.message }}</div>{% endfor %}<a href='/logout'>LOGOUT</a></div></body></html>"
-HTML_FEEDBACK = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>FEEDBACK</h1><form method='POST'><textarea name='message' placeholder='MESSAGE' required></textarea><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
-HTML_CAPSULE = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{% for c in capsules %}<div class='msg'>{{ c.name }}: {{ c.message }}</div>{% endfor %}<a href='/'>BACK</a></div></body></html>"
-HTML_PORTAL = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>PORTAL</h1>{% for c in chats %}<div class='msg'>YOU: {{ c.user }}<br>AI: {{ c.ai }}</div>{% endfor %}<form method='POST'><input type='text' name='message' placeholder='TALK...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
+HTML_HOME = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='blob blob2'></div><div class='blob blob3'></div><div class='hud-container'><h1>OMNI-PLATFORM 2526</h1><a href='/login'>ورود به شبکه عصبی</a><a href='/feedback'>ثبت سیگنال احساسی</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
+HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='blob blob2'></div><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
+HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='blob blob2'></div><div class='hud-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
+HTML_DASHBOARD = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='hud-container'><h1>DASHBOARD</h1><h3>CODE: {{ code }}</h3>{% for f in feedbacks %}<div class='msg'>{{ f.emotion }}: {{ f.message }}</div>{% endfor %}<a href='/logout'>LOGOUT</a></div></body></html>"
+HTML_FEEDBACK = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='hud-container'><h1>FEEDBACK</h1><form method='POST'><textarea name='message' placeholder='MESSAGE' required></textarea><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
+HTML_CAPSULE = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='hud-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{% for c in capsules %}<div class='msg'>{{ c.name }}: {{ c.message }}</div>{% endfor %}<a href='/'>BACK</a></div></body></html>"
+HTML_PORTAL = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='blob blob1'></div><div class='hud-container'><h1>PORTAL</h1>{% for c in chats %}<div class='msg'>YOU: {{ c.user }}<br>AI: {{ c.ai }}</div>{% endfor %}<form method='POST'><input type='text' name='message' placeholder='TALK...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
 
 @app.route('/')
 def index(): return HTML_HOME

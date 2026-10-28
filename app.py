@@ -123,7 +123,7 @@ def memory_portal():
 return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
 with app.app_context():
-db.create_all()
+    db.create_all()
 
 if __name__ == '__main__':
 port = int(os.environ.get('PORT', 5000))

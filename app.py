@@ -1,4 +1,3 @@
-به من
 
 import os
 import random

@@ -38,16 +38,16 @@ class TimeCapsule(db.Model):
 def load_user(user_id): return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
-return 'خنثی 😐'
+    text = text.lower()
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
+    if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
+    return 'خنثی 😐'
 
 def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
-if "خوشحال" in text: return "شادی تو عالیه!"
-return "من به تو گوش می‌دهم."
+    text = user_input.lower()
+    if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
+    if "خوشحال" in text: return "شادی تو عالیه!"
+    return "من به تو گوش می‌دهم."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');

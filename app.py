@@ -86,8 +86,8 @@ def login():
         user = Business.query.filter_by(username=request.form['username']).first()
         if user and check_password_hash(user.password, request.form['password']):
         login_user(user); return redirect(url_for('dashboard'))
-    return "ACCESS DENIED."
-return HTML_LOGIN
+        return "ACCESS DENIED."
+    return HTML_LOGIN
 
 @app.route('/logout')
 @login_required
@@ -95,7 +95,7 @@ def logout(): logout_user(); return redirect(url_for('index'))
 
 @app.route('/dashboard')
 @login_required
-    def dashboard():
+def dashboard():
 return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.all())
 
 @app.route('/feedback', methods=['GET', 'POST'])

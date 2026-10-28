@@ -1,4 +1,3 @@
-
 import os
 import random
 import string
@@ -9,8 +8,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'quantum-ultimate-2026'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:uV9l6wSZRt2WYBDkGv6FSlQEIe3L6LlY@dpg-dbghkgl9el5s73b10u1g-a.frankfurt-postgres.render.com/mydb_gb4s'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'لینک_اکسترنال_دیتابیس_را_اینجا_بگذارید'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -51,23 +51,24 @@ return "من به تو گوش می‌دهم."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
-body { font-family: 'Vazirmatn', Tahoma; background: #02040a; color: #00ffcc; text-align: center; padding: 50px; }
-.hud-container { background: rgba(2,10,20,0.85); border: 1px solid #00ffcc; padding: 40px; max-width: 600px; margin: auto; box-shadow: 0 0 30px rgba(0,255,204,0.2); }
-h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 10px #00ffcc; margin-bottom: 20px; }
-input, textarea, button { width: 100%; padding: 15px; margin: 10px 0; background: #050505; border: 1px solid #00ffcc; color: #00ffcc; font-family: 'Share Tech Mono'; }
-button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; }
-a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; font-family: 'Share Tech Mono'; }
-.msg { background: rgba(0,255,204,0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 10px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Vazirmatn', Tahoma; background-color: #02040a; background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px); background-size: 30px 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #00ffcc; overflow: hidden; }
+.hud-container { background: rgba(2, 10, 20, 0.85); border: 1px solid #00ffcc; padding: 40px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%); }
+.hud-container::before { content: 'SYSTEM ONLINE // SECURE CONNECTION'; position: absolute; top: -12px; left: 20px; background: #02040a; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #00ffcc; letter-spacing: 1px; }
+h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); margin-bottom: 20px; text-align: center; letter-spacing: 3px; }
+input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); color: #00ffcc; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; }
+button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; }
+.msg { background: rgba(0, 255, 204, 0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 15px; }
 """
 
 HTML_HOME = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>OMNI-PLATFORM</h1><a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
-HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
-HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
+HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS SYSTEM</button></form><a href='/register'>NEW USER REGISTRATION</a></div></body></html>"
+HTML_REGISTER = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='MISSION NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INITIALIZE</button></form></div></body></html>"
 HTML_DASHBOARD = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>DASHBOARD</h1><h3>CODE: {{ code }}</h3>{% for f in feedbacks %}<div class='msg'>{{ f.emotion }}: {{ f.message }}</div>{% endfor %}<a href='/logout'>LOGOUT</a></div></body></html>"
 HTML_FEEDBACK = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>FEEDBACK</h1><form method='POST'><textarea name='message' placeholder='MESSAGE' required></textarea><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
 HTML_CAPSULE = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{% for c in capsules %}<div class='msg'>{{ c.name }}: {{ c.message }}</div>{% endfor %}<a href='/'>BACK</a></div></body></html>"
 HTML_PORTAL = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>PORTAL</h1>{% for c in chats %}<div class='msg'>YOU: {{ c.user }}<br>AI: {{ c.ai }}</div>{% endfor %}<form method='POST'><input type='text' name='message' placeholder='TALK...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
-
 @app.route('/')
 def index(): return HTML_HOME
 
@@ -130,3 +131,4 @@ db.create_all()
 if __name__ == '__main__':
 port = int(os.environ.get('PORT', 5000))
 app.run(host='0.0.0.0', port=port)
+

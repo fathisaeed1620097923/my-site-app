@@ -110,7 +110,7 @@ def time_capsule():
     if request.method == 'POST':
         db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
         db.session.commit()
-        return redirect(url_for('time_capsule'))
+return redirect(url_for('time_capsule'))
     return render_template_string(HTML_CAPSULE, capsules=TimeCapsule.query.all())
 
 @app.route('/memory-portal', methods=['GET', 'POST'])

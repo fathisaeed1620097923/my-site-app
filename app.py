@@ -74,10 +74,10 @@ def index(): return HTML_HOME
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-    db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
-    db.session.commit()
-    return f"<h1>YOUR CODE: {code}</h1>"
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
+        db.session.commit()
+        return f"<h1>YOUR CODE: {code}</h1>"
 return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])

@@ -38,16 +38,16 @@ class TimeCapsule(db.Model):
 def load_user(user_id): return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
-return 'خنثی 😐'
+    text = text.lower()
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
+    if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
+    return 'خنثی 😐'
 
 def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
-if "خوشحال" in text: return "شادی تو عالیه!"
-return "من به تو گوش می‌دهم."
+    text = user_input.lower()
+    if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
+    if "خوشحال" in text: return "شادی تو عالیه!"
+    return "من به تو گوش می‌دهم."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
@@ -73,20 +73,20 @@ def index(): return HTML_HOME
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-if request.method == 'POST':
-code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
-db.session.commit()
-return f"<h1>YOUR CODE: {code}</h1>"
+    if request.method == 'POST':
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
+    db.session.commit()
+    return f"<h1>YOUR CODE: {code}</h1>"
 return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user); return redirect(url_for('dashboard'))
-return "ACCESS DENIED."
+        if request.method == 'POST':
+        user = Business.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+        login_user(user); return redirect(url_for('dashboard'))
+    return "ACCESS DENIED."
 return HTML_LOGIN
 
 @app.route('/logout')
@@ -95,38 +95,38 @@ def logout(): logout_user(); return redirect(url_for('index'))
 
 @app.route('/dashboard')
 @login_required
-def dashboard():
+    def dashboard():
 return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.all())
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-emotion = analyze_emotion(request.form['message'])
-db.session.add(Feedback(message=request.form['message'], emotion=emotion))
-db.session.commit()
+    if request.method == 'POST':
+    emotion = analyze_emotion(request.form['message'])
+    db.session.add(Feedback(message=request.form['message'], emotion=emotion))
+    db.session.commit()
 return f"<h1>SAVED: {emotion}</h1>"
 return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
-def time_capsule():
-if request.method == 'POST':
-db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
-db.session.commit()
+    def time_capsule():
+    if request.method == 'POST':
+    db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
+    db.session.commit()
 return redirect(url_for('time_capsule'))
 return render_template_string(HTML_CAPSULE, capsules=TimeCapsule.query.all())
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
-if request.method == 'POST':
-if 'chats' not in session: session['chats'] = []
-session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
-session.modified = True
+    if request.method == 'POST':
+    if 'chats' not in session: session['chats'] = []
+    session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
+    session.modified = True
 return redirect(url_for('memory_portal'))
 return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
-with app.app_context():
+    with app.app_context():
 db.create_all()
 
-if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
+    if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
 app.run(host='0.0.0.0', port=port)

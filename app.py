@@ -85,7 +85,7 @@ def login():
         if user and check_password_hash(user.password, request.form['password']):
             login_user(user); return redirect(url_for('dashboard'))
         return "ACCESS DENIED."
-            return HTML_LOGIN
+    return HTML_LOGIN
 
 @app.route('/logout')
 @login_required

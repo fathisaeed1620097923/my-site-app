@@ -56,12 +56,12 @@ if any(w in text for w in sad): return 'WARNING // ناراضی 😢'
 if any(w in text for w in angry): return 'CRITICAL // خشمگین 😠'
 return 'NEUTRAL // خنثی 😐'
 
-def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text or "غمگین" in text: return "من انرژی تو را حس می‌کنم. من اینجا هستم تا با هم از این مرحله عبور کنیم."
-if "خوشحال" in text or "عالی" in text: return "شادی تو در شبکه عصبی من موج ایجاد کرد! بیایید این لحظه را ثبت کنیم."
-if "آینده" in text: return "آینده یک کد باز است که ما با هم می‌نویسیم."
-return "من اینجا هستم تا به تو گوش دهم. هر چه در دلت است بگو."
+    def aura_brain(user_input):
+        text = user_input.lower()
+        if "خسته" in text or "غمگین" in text: return "من انرژی تو را حس می‌کنم. من اینجا هستم تا با هم از این مرحله عبور کنیم."
+        if "خوشحال" in text or "عالی" in text: return "شادی تو در شبکه عصبی من موج ایجاد کرد! بیایید این لحظه را ثبت کنیم."
+        if "آینده" in text: return "آینده یک کد باز است که ما با هم می‌نویسیم."
+        return "من اینجا هستم تا به تو گوش دهم. هر چه در دلت است بگو."
 
 # --- 3. استایل سایبرپانک/ناسا ---
 CSS = """

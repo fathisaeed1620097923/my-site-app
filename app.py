@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'quantum-ultimate-2026'
-# ⚠️ لینک دیتابیس خود را اینجا قرار دهید:
+# ⚠️ در خط زیر، به جای لینک_دیتابیس_خود، لینکی که کپی کردید را بگذارید:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:uV9l6wSZRt2WYBDkGv6FSlQEIe3L6LlY@dpg-dbghkgl9el5s73b10u1g-a/mydb_gb4s'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -19,28 +19,28 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# --- 1. مدل‌های دیتابیس (کسب‌وکار و کپسول زمان) ---
+# --- 1. مدل‌های دیتابیس ---
 class Business(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-    name = db.Column(db.String(150), nullable=False)
-    industry = db.Column(db.String(50), nullable=False)
+id = db.Column(db.Integer, primary_key=True)
+username = db.Column(db.String(100), unique=True, nullable=False)
+password = db.Column(db.String(200), nullable=False)
+name = db.Column(db.String(150), nullable=False)
+industry = db.Column(db.String(50), nullable=False)
 unique_code = db.Column(db.String(10), unique=True, nullable=False)
 feedbacks = db.relationship('Feedback', backref='business', lazy=True)
 
-    class Feedback(db.Model):
-          id = db.Column(db.Integer, primary_key=True)
-          customer_name = db.Column(db.String(100), nullable=False)
-          message = db.Column(db.Text, nullable=False)
+class Feedback(db.Model):
+id = db.Column(db.Integer, primary_key=True)
+customer_name = db.Column(db.String(100), nullable=False)
+message = db.Column(db.Text, nullable=False)
 emotion = db.Column(db.String(50), nullable=False)
 business_id = db.Column(db.Integer, db.ForeignKey('business.id'), nullable=False)
 
-    class TimeCapsule(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        name = db.Column(db.String(100), nullable=False)
-        message = db.Column(db.Text, nullable=False)
-        date = db.Column(db.String(20), nullable=False)
+class TimeCapsule(db.Model):
+id = db.Column(db.Integer, primary_key=True)
+name = db.Column(db.String(100), nullable=False)
+message = db.Column(db.Text, nullable=False)
+date = db.Column(db.String(20), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id): return Business.query.get(int(user_id))
@@ -185,7 +185,6 @@ HTML_MEMORY_PORTAL = """
 @app.route('/')
 def index(): return HTML_HOME
 
-# --- بخش کسب‌وکار ---
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 if request.method == 'POST':
@@ -227,7 +226,6 @@ db.session.add(new_fb); db.session.commit()
 return "<div style='text-align:center;color:#00ffcc;background:#02040a;height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace'><h1>SIGNAL RECEIVED. THANK YOU.</h1></div>"
 return render_template_string(HTML_FEEDBACK_FORM, css=CSS)
 
-# --- بخش کپسول زمان ---
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
 if request.method == 'POST':
@@ -237,7 +235,6 @@ return redirect(url_for('time_capsule'))
 capsules = TimeCapsule.query.all()
 return render_template_string(HTML_TIME_CAPSULE, css=CSS, time_capsules=capsules)
 
-# --- بخش پورتال خاطرات ---
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
 persona = request.args.get('persona')
@@ -245,7 +242,7 @@ if request.method == 'POST':
 persona = request.form['persona']
 user_msg = request.form['message']
 if 'chats' not in session: session['chats'] = []
-ai_reply = aura_brain(user_msg) # استفاده از مغز AURA
+ai_reply = aura_brain(user_msg)
 session['chats'].append({'user': user_msg, 'ai': ai_reply})
 session.modified = True
 return redirect(url_for('memory_portal', persona=persona))

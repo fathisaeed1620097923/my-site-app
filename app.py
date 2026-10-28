@@ -1,5 +1,3 @@
-
-
 import os
 import random
 import string
@@ -10,7 +8,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'quantum-ultimate-2026'
-# ⚠️ در خط زیر، به جای لینک_دیتابیس_خود، لینکی که کپی کردید را بگذارید:
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://myuser:uV9l6wSZRt2WYBDkGv6FSlQEIe3L6LlY@dpg-dbghkgl9el5s73b10u1g-a/mydb_gb4s'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -19,9 +16,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# --- 1. مدل‌های دیتابیس ---
 class Business(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+id = db.Column(db.Integer, primary_key=True)
 username = db.Column(db.String(100), unique=True, nullable=False)
 password = db.Column(db.String(200), nullable=False)
 name = db.Column(db.String(150), nullable=False)
@@ -30,40 +26,38 @@ unique_code = db.Column(db.String(10), unique=True, nullable=False)
 feedbacks = db.relationship('Feedback', backref='business', lazy=True)
 
 class Feedback(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    customer_name = db.Column(db.String(100), nullable=False)
-    message = db.Column(db.Text, nullable=False)
-    emotion = db.Column(db.String(50), nullable=False)
-    business_id = db.Column(db.Integer, db.ForeignKey('business.id'), nullable=False)
+id = db.Column(db.Integer, primary_key=True)
+customer_name = db.Column(db.String(100), nullable=False)
+message = db.Column(db.Text, nullable=False)
+emotion = db.Column(db.String(50), nullable=False)
+business_id = db.Column(db.Integer, db.ForeignKey('business.id'), nullable=False)
 
 class TimeCapsule(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    message = db.Column(db.Text, nullable=False)
-    date = db.Column(db.String(20), nullable=False)
+id = db.Column(db.Integer, primary_key=True)
+name = db.Column(db.String(100), nullable=False)
+message = db.Column(db.Text, nullable=False)
+date = db.Column(db.String(20), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id): return Business.query.get(int(user_id))
 
-# --- 2. موتورهای هوش مصنوعی ---
 def analyze_emotion(text):
-    text = text.lower()
-    happy = ['خوشحال', 'عالی', 'شاد', 'لبخند', 'سریع', 'خوب', 'ممنون', 'راضی']
-    sad = ['غمگین', 'خسته', 'تنها', 'گریه', 'دلتنگ', 'کند', 'شلوغ']
-    angry = ['عصبانی', 'متنفر', 'خشم', 'بیزار', 'افتضاح', 'ناامید']
+text = text.lower()
+happy = ['خوشحال', 'عالی', 'شاد', 'لبخند', 'سریع', 'خوب', 'ممنون', 'راضی']
+sad = ['غمگین', 'خسته', 'تنها', 'گریه', 'دلتنگ', 'کند', 'شلوغ']
+angry = ['عصبانی', 'متنفر', 'خشم', 'بیزار', 'افتضاح', 'ناامید']
 if any(w in text for w in happy): return 'SECURE // رضایت 😊'
 if any(w in text for w in sad): return 'WARNING // ناراضی 😢'
 if any(w in text for w in angry): return 'CRITICAL // خشمگین 😠'
 return 'NEUTRAL // خنثی 😐'
 
 def aura_brain(user_input):
-        text = user_input.lower()
-        if "خسته" in text or "غمگین" in text: return "من انرژی تو را حس می‌کنم. من اینجا هستم تا با هم از این مرحله عبور کنیم."
-        if "خوشحال" in text or "عالی" in text: return "شادی تو در شبکه عصبی من موج ایجاد کرد! بیایید این لحظه را ثبت کنیم."
-        if "آینده" in text: return "آینده یک کد باز است که ما با هم می‌نویسیم."
-        return "من اینجا هستم تا به تو گوش دهم. هر چه در دلت است بگو."
+text = user_input.lower()
+if "خسته" in text or "غمگین" in text: return "من انرژی تو را حس می‌کنم. من اینجا هستم تا با هم از این مرحله عبور کنیم."
+if "خوشحال" in text or "عالی" in text: return "شادی تو در شبکه عصبی من موج ایجاد کرد! بیایید این لحظه را ثبت کنیم."
+if "آینده" in text: return "آینده یک کد باز است که ما با هم می‌نویسیم."
+return "من اینجا هستم تا به تو گوش دهم. هر چه در دلت است بگو."
 
-# --- 3. استایل سایبرپانک/ناسا ---
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -90,7 +84,6 @@ a:hover { color: #fff; text-shadow: 0 0 10px #00ffcc; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 """
 
-# --- 4. قالب‌ها ---
 HTML_HOME = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """</style></head><body>
 <div class='hud-container'>
@@ -181,7 +174,6 @@ HTML_MEMORY_PORTAL = """
 </body></html>
 """
 
-# --- 5. مسیرها (Routes) ---
 @app.route('/')
 def index(): return HTML_HOME
 

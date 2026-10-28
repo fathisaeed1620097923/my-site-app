@@ -47,10 +47,10 @@ def load_user(user_id): return Business.query.get(int(user_id))
 
 # --- 2. موتورهای هوش مصنوعی ---
 def analyze_emotion(text):
-text = text.lower()
-happy = ['خوشحال', 'عالی', 'شاد', 'لبخند', 'سریع', 'خوب', 'ممنون', 'راضی']
-sad = ['غمگین', 'خسته', 'تنها', 'گریه', 'دلتنگ', 'کند', 'شلوغ']
-angry = ['عصبانی', 'متنفر', 'خشم', 'بیزار', 'افتضاح', 'ناامید']
+    text = text.lower()
+    happy = ['خوشحال', 'عالی', 'شاد', 'لبخند', 'سریع', 'خوب', 'ممنون', 'راضی']
+    sad = ['غمگین', 'خسته', 'تنها', 'گریه', 'دلتنگ', 'کند', 'شلوغ']
+    angry = ['عصبانی', 'متنفر', 'خشم', 'بیزار', 'افتضاح', 'ناامید']
 if any(w in text for w in happy): return 'SECURE // رضایت 😊'
 if any(w in text for w in sad): return 'WARNING // ناراضی 😢'
 if any(w in text for w in angry): return 'CRITICAL // خشمگین 😠'

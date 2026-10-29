@@ -78,7 +78,7 @@ def register():
         db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
         db.session.commit()
         return f"<h1>YOUR CODE: {code}</h1>"
-return HTML_REGISTER
+    return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

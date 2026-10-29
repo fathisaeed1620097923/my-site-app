@@ -102,7 +102,7 @@ def index():
 def dashboard():
     from datetime import date
     if not current_user.is_authenticated:
-    return redirect(url_for('login'))
+        return redirect(url_for('login'))
     today = date.today()
     bonus = ""
 

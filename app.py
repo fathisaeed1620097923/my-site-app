@@ -112,7 +112,7 @@ def dashboard():
             db.session.commit()
             bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
     if not current_user.is_authenticated:
-return redirect(url_for('login'))
+    return redirect(url_for('login'))
 current_user.level = (current_user.points // 100) + 1
 db.session.commit()
 progress = current_user.points % 100

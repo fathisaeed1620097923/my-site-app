@@ -96,7 +96,7 @@ theme_selector = f"""
 </div>
 """
 
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{theme}'>{sound_html}<div class='glass-container'><h1>OMNI-PLATFORM</h1>{theme_selector}<a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{theme}'>{sound_html}<div class='glass-container'><h1>OMNI-PLATFORM</h1>{theme_selector}<a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
 @app.route('/dashboard')
 @login_required
 def dashboard():

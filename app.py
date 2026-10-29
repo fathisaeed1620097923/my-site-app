@@ -132,12 +132,12 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user); return redirect(url_for('dashboard'))
-return "ACCESS DENIED."
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
+    if request.method == 'POST':
+        user = Business.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+            login_user(user); return redirect(url_for('dashboard'))
+        return "ACCESS DENIED."
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

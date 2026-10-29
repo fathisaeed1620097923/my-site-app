@@ -25,6 +25,10 @@ class Business(UserMixin, db.Model):
     password = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(150), nullable=False)
     unique_code = db.Column(db.String(10), unique=True, nullable=False)
+    
+    points = db.Column(db.Integer, default=0)
+    level = db.Column(db.Integer, default=1)
+    last_login = db.Column(db.Date)
     points = db.Column(db.Integer, default=0)
     level = db.Column(db.Integer, default=1)
     last_login = db.Column(db.Date)

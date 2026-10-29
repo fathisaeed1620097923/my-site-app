@@ -20,14 +20,14 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class Business(UserMixin, db.Model):
-id = db.Column(db.Integer, primary_key=True)
-username = db.Column(db.String(100), unique=True, nullable=False)
-password = db.Column(db.String(200), nullable=False)
-name = db.Column(db.String(150), nullable=False)
-unique_code = db.Column(db.String(10), unique=True, nullable=False)
-points = db.Column(db.Integer, default=0)
-level = db.Column(db.Integer, default=1)
-last_login = db.Column(db.Date)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    unique_code = db.Column(db.String(10), unique=True, nullable=False)
+    points = db.Column(db.Integer, default=0)
+    level = db.Column(db.Integer, default=1)
+    last_login = db.Column(db.Date)
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');

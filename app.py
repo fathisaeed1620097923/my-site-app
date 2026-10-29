@@ -111,12 +111,13 @@ def dashboard():
             current_user.last_login = today
             db.session.commit()
             bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
-    if not current_user.is_authenticated:
-    return redirect(url_for('login'))
-current_user.level = (current_user.points // 100) + 1
-db.session.commit()
-progress = current_user.points % 100
+    
+    current_user.level = (current_user.points // 100) + 1
+    db.session.commit()
+    progress = current_user.points % 100
 
+progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div class='progress-bar'><div class='progress-fill' style='width: {progress}%;'></div></div></div>"
+
+return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
 progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div style='background: rgba(255,255,255,0.1); border-radius: 10px; height: 10px; overflow: hidden;'><div style='background: #ff0080; height: 100%; width: {progress}%;'></div></div></div>"
-def dashboard():
-    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{session.get('theme', 'theme-neon')}'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
+

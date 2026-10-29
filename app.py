@@ -80,13 +80,13 @@ def index():
     session['theme'] = theme
 
 # منطق پخش صدا بر اساس پوسته
-sound_html = ""
-if theme == 'theme-paradise': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-zombie': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-neon': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-void': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' type='audio/mpeg'></audio>"
+    sound_html = ""
+    if theme == 'theme-paradise': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-zombie': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-neon': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-void': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' type='audio/mpeg'></audio>"
 
-theme_selector = f"""
+    theme_selector = f"""
 <div style='margin-bottom: 20px;'>
 <span style='font-size: 0.9rem; opacity: 0.7;'>انتخاب دنیا:</span><br>
 <a href='/?theme=theme-paradise' class='theme-btn' style='color:#006064; border-color:#006064;'>بهشتی</a>

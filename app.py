@@ -76,8 +76,8 @@ a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; 
 """
 @app.route('/')
 def index():
-theme = request.args.get('theme', session.get('theme', 'theme-neon'))
-session['theme'] = theme
+    theme = request.args.get('theme', session.get('theme', 'theme-neon'))
+    session['theme'] = theme
 
 # منطق پخش صدا بر اساس پوسته
 sound_html = ""

@@ -1,16 +1,4 @@
 
-CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Vazirmatn', Tahoma; background-color: #02040a; background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px); background-size: 30px 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #00ffcc; overflow: hidden; perspective: 1000px; }
-.hud-container { background: rgba(2, 10, 20, 0.85); border: 1px solid #00ffcc; padding: 40px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); transition: transform 0.1s ease-out; transform-style: preserve-3d; }
-.hud-container::before { content: 'SYSTEM ONLINE // SECURE CONNECTION'; position: absolute; top: -12px; left: 20px; background: #02040a; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #00ffcc; letter-spacing: 1px; }
-h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); margin-bottom: 20px; text-align: center; letter-spacing: 3px; transform: translateZ(50px); }
-input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); color: #00ffcc; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; transform: translateZ(30px); }
-button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
-a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; transform: translateZ(20px); }
-.msg { background: rgba(0, 255, 204, 0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 15px; transform: translateZ(10px); }
-"""
 import os
 import random
 import string
@@ -61,16 +49,21 @@ def aura_brain(user_input):
     if "خوشحال" in text: return "شادی تو عالیه!"
     return "من به تو گوش می‌دهم."
 
+
+
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
-body { font-family: 'Vazirmatn', Tahoma; background: #02040a; color: #00ffcc; text-align: center; padding: 50px; }
-.hud-container { background: rgba(2,10,20,0.85); border: 1px solid #00ffcc; padding: 40px; max-width: 600px; margin: auto; box-shadow: 0 0 30px rgba(0,255,204,0.2); }
-h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 10px #00ffcc; margin-bottom: 20px; }
-input, textarea, button { width: 100%; padding: 15px; margin: 10px 0; background: #050505; border: 1px solid #00ffcc; color: #00ffcc; font-family: 'Share Tech Mono'; }
-button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; }
-a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; font-family: 'Share Tech Mono'; }
-.msg { background: rgba(0,255,204,0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 10px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Vazirmatn', Tahoma; background-color: #02040a; background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px); background-size: 30px 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #00ffcc; overflow: hidden; perspective: 1000px; }
+.hud-container { background: rgba(2, 10, 20, 0.85); border: 1px solid #00ffcc; padding: 40px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+.hud-container::before { content: 'SYSTEM ONLINE // SECURE CONNECTION'; position: absolute; top: -12px; left: 20px; background: #02040a; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #00ffcc; letter-spacing: 1px; }
+h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); margin-bottom: 20px; text-align: center; letter-spacing: 3px; transform: translateZ(50px); }
+input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); color: #00ffcc; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; transform: translateZ(30px); }
+button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; transform: translateZ(20px); }
+.msg { background: rgba(0, 255, 204, 0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 15px; transform: translateZ(10px); }
 """
+
 
 HTML_HOME = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>OMNI-PLATFORM</h1><a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
 HTML_LOGIN = "<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>" + CSS + "</style></head><body><div class='hud-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"

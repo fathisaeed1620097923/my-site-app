@@ -120,3 +120,8 @@ def dashboard():
 
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
 
+
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

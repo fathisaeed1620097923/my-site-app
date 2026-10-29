@@ -121,7 +121,23 @@ def dashboard():
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+if request.method == 'POST':
+code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
+db.session.commit()
+return f"<h1>YOUR CODE: {code}</h1>"
+return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+if request.method == 'POST':
+user = Business.query.filter_by(username=request.form['username']).first()
+if user and check_password_hash(user.password, request.form['password']):
+login_user(user); return redirect(url_for('dashboard'))
+return "ACCESS DENIED."
+return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

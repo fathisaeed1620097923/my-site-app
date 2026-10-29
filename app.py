@@ -1,4 +1,16 @@
 
+CSS = """
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Vazirmatn:wght@300;700&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Vazirmatn', Tahoma; background-color: #02040a; background-image: linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px); background-size: 30px 30px; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #00ffcc; overflow: hidden; perspective: 1000px; }
+.hud-container { background: rgba(2, 10, 20, 0.85); border: 1px solid #00ffcc; padding: 40px; width: 100%; max-width: 600px; position: relative; box-shadow: 0 0 30px rgba(0, 255, 204, 0.15); transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+.hud-container::before { content: 'SYSTEM ONLINE // SECURE CONNECTION'; position: absolute; top: -12px; left: 20px; background: #02040a; padding: 0 10px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: #00ffcc; letter-spacing: 1px; }
+h1 { font-family: 'Share Tech Mono', monospace; font-size: 2.5rem; color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.6); margin-bottom: 20px; text-align: center; letter-spacing: 3px; transform: translateZ(50px); }
+input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.3); color: #00ffcc; font-family: 'Share Tech Mono', monospace; outline: none; transition: 0.3s; transform: translateZ(30px); }
+button { background: #00ffcc; color: #000; cursor: pointer; font-weight: bold; clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px); }
+a { color: #ff0080; text-decoration: none; display: block; margin-top: 15px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; transform: translateZ(20px); }
+.msg { background: rgba(0, 255, 204, 0.05); border-left: 4px solid #00ffcc; padding: 15px; margin-top: 15px; transform: translateZ(10px); }
+"""
 import os
 import random
 import string

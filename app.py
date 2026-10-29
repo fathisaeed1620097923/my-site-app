@@ -100,15 +100,15 @@ return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</sty
 @app.route('/dashboard')
 @login_required
 def dashboard():
-from datetime import date
-today = date.today()
-bonus = ""
+    from datetime import date
+    today = date.today()
+    bonus = ""
 
-if current_user.last_login != today:
-current_user.points += 20
+    if current_user.last_login != today:
+    current_user.points += 20
 current_user.last_login = today
-db.session.commit()
-bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
+        db.session.commit()
+        bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
 
 current_user.level = (current_user.points // 100) + 1
 db.session.commit()

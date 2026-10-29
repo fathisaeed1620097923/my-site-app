@@ -118,11 +118,11 @@ def time_capsule():
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
     if request.method == 'POST':
-    if 'chats' not in session: session['chats'] = []
-    session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
-    session.modified = True
-return redirect(url_for('memory_portal'))
-return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
+        if 'chats' not in session: session['chats'] = []
+        session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
+        session.modified = True
+        return redirect(url_for('memory_portal'))
+        return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
     with app.app_context():
 db.create_all()

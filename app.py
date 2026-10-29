@@ -108,7 +108,7 @@ def feedback():
     return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
-    def time_capsule():
+def time_capsule():
     if request.method == 'POST':
     db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
     db.session.commit()

@@ -118,6 +118,5 @@ def dashboard():
 
 progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div class='progress-bar'><div class='progress-fill' style='width: {progress}%;'></div></div></div>"
 
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
-progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div style='background: rgba(255,255,255,0.1); border-radius: 10px; height: 10px; overflow: hidden;'><div style='background: #ff0080; height: 100%; width: {progress}%;'></div></div></div>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
 

@@ -105,10 +105,10 @@ def dashboard():
     bonus = ""
 
     if current_user.last_login != today:
-    current_user.points += 20
-current_user.last_login = today
-        db.session.commit()
-        bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
+            current_user.points += 20
+            current_user.last_login = today
+            db.session.commit()
+            bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
 
 current_user.level = (current_user.points // 100) + 1
 db.session.commit()

@@ -116,7 +116,7 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-    user = Business.query.filter_by(username=request.form['username']).first()
+        user = Business.query.filter_by(username=request.form['username']).first()
         if user and check_password_hash(user.password, request.form['password']):
         login_user(user); return redirect(url_for('dashboard'))
         return "ACCESS DENIED."

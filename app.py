@@ -154,13 +154,13 @@ def time_capsule():
         name = request.form['name']
         message = request.form['message']
         date_val = request.form['date']
-db.session.add(TimeCapsule(name=name, message=message, date=date_val))
+        db.session.add(TimeCapsule(name=name, message=message, date=date_val))
     if current_user.is_authenticated:
       current_user.points += 10
       db.session.commit()
-    future_prediction = f"<div class='msg' style='border-color: #00ffcc;'><h3>🌌 پیش‌بینی آینده برای پیام شما:</h3><p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p><p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p></div>"
-    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
-  return HTML_CAPSULE
+      future_prediction = f"<div class='msg' style='border-color: #00ffcc;'><h3>🌌 پیش‌بینی آینده برای پیام شما:</h3><p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p><p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p></div>"
+      return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
+      return HTML_CAPSULE
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():

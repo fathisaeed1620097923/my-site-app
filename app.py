@@ -1,4 +1,4 @@
-
+ 
 
 import os
 import random
@@ -77,30 +77,9 @@ a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; 
 .theme-void input, .theme-void textarea { background: #222; border: 1px solid #444; color: #fff; }
 .theme-void button { background: #fff; color: #000; }
 .theme-void .msg { background: rgba(255,255,255,0.05); border-left: 4px solid #fff; }
-"""
-@app.route('/')
+"""@app.route('/')
 def index():
-    theme = request.args.get('theme', session.get('theme', 'theme-neon'))
-    session['theme'] = theme
-
-# منطق پخش صدا بر اساس پوسته
-    sound_html = ""
-    if theme == 'theme-paradise': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' type='audio/mpeg'></audio>"
-    elif theme == 'theme-zombie': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>"
-    elif theme == 'theme-neon': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' type='audio/mpeg'></audio>"
-    elif theme == 'theme-void': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' type='audio/mpeg'></audio>"
-
-    theme_selector = f"""
-<div style='margin-bottom: 20px;'>
-<span style='font-size: 0.9rem; opacity: 0.7;'>انتخاب دنیا:</span><br>
-<a href='/?theme=theme-paradise' class='theme-btn' style='color:#006064; border-color:#006064;'>بهشتی</a>
-<a href='/?theme=theme-zombie' class='theme-btn' style='color:#ff3333; border-color:#ff3333;'>مردگان</a>
-<a href='/?theme=theme-neon' class='theme-btn' style='color:#00ffcc; border-color:#00ffcc;'>سایبرپانک</a>
-<a href='/?theme=theme-void' class='theme-btn' style='color:#fff; border-color:#fff;'>سیاه‌چال</a>
-</div>
-"""
-def index():
-    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{theme}'>{sound_html}<div class='glass-container'><h1>OMNI-PLATFORM</h1>{theme_selector}<a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
+return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>OMNI-PLATFORM</h1><a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
 @app.route('/dashboard')
 @login_required
 def dashboard():

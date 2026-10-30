@@ -146,7 +146,7 @@ def feedback():
     else:
         media = "<h2>احساس شما خنثی است.</h2>"
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-neon'><div class='glass-container'><h1>تحلیل احساسات</h1><div class='msg'><b>پیام شما:</b> {message}</div><div class='msg'><b>احساس:</b> {emotion}</div>{media}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
-  return HTML_FEEDBACK
+    return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():

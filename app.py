@@ -109,7 +109,7 @@ def register():
     if request.method == 'POST':
         code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
-    db.session.commit()
+        db.session.commit()
         return f"<h1>YOUR CODE: {code}</h1>"
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
 

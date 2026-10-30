@@ -149,9 +149,9 @@ def feedback():
     if request.method == 'POST':
         message = request.form['message']
         emotion = analyze_emotion(message)
-db.session.add(Feedback(message=message, emotion=emotion))
+        db.session.add(Feedback(message=message, emotion=emotion))
         if current_user.is_authenticated:
-        current_user.points += 10
+            current_user.points += 10
         db.session.commit()
         return f"<h1>SAVED: {emotion}</h1>"
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>آینه احساسی</h1><form method='POST'><textarea name='message' placeholder='امروز چه احساسی داری؟' required></textarea><button type='submit'>تحلیل و ورود به نقش</button></form><a href='/'>BACK</a></div></body></html>"

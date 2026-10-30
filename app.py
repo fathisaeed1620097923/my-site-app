@@ -137,8 +137,8 @@ def feedback():
         emotion = analyze_emotion(message)
 db.session.add(Feedback(message=message, emotion=emotion))
     if current_user.is_authenticated:
-    current_user.points += 10
-    db.session.commit()
+        current_user.points += 10
+        db.session.commit()
     if 'رضایت' in emotion:
     media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
     elif 'ناراضی' in emotion:

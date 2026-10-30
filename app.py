@@ -18,40 +18,40 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class Business(UserMixin, db.Model):
-id = db.Column(db.Integer, primary_key=True)
-username = db.Column(db.String(100), unique=True, nullable=False)
-password = db.Column(db.String(200), nullable=False)
-name = db.Column(db.String(150), nullable=False)
-unique_code = db.Column(db.String(10), unique=True, nullable=False)
-points = db.Column(db.Integer, default=0)
-level = db.Column(db.Integer, default=1)
-last_login = db.Column(db.Date)
+  id = db.Column(db.Integer, primary_key=True)
+  username = db.Column(db.String(100), unique=True, nullable=False)
+  password = db.Column(db.String(200), nullable=False)
+  name = db.Column(db.String(150), nullable=False)
+  unique_code = db.Column(db.String(10), unique=True, nullable=False)
+  points = db.Column(db.Integer, default=0)
+  level = db.Column(db.Integer, default=1)
+  last_login = db.Column(db.Date)
 
 class Feedback(db.Model):
-id = db.Column(db.Integer, primary_key=True)
-message = db.Column(db.Text, nullable=False)
-emotion = db.Column(db.String(50), nullable=False)
+  id = db.Column(db.Integer, primary_key=True)
+  message = db.Column(db.Text, nullable=False)
+  emotion = db.Column(db.String(50), nullable=False)
 
 class TimeCapsule(db.Model):
-id = db.Column(db.Integer, primary_key=True)
-name = db.Column(db.String(100), nullable=False)
-message = db.Column(db.Text, nullable=False)
-date = db.Column(db.String(20), nullable=False)
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String(100), nullable=False)
+  message = db.Column(db.Text, nullable=False)
+  date = db.Column(db.String(20), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id): return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
-return 'خنثی 😐'
+  text = text.lower()
+  if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
+  if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
+  return 'خنثی 😐'
 
 def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
-if "خوشحال" in text: return "شادی تو عالیه!"
-return "من به تو گوش می‌دهم."
+  text = user_input.lower()
+  if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
+  if "خوشحال" in text: return "شادی تو عالیه!"
+  return "من به تو گوش می‌دهم."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
@@ -71,11 +71,11 @@ a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; 
 
 JS = """
 document.addEventListener('mousemove', (e) => {
-const card = document.querySelector('.glass-container');
-if (!card) return;
-const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+  const card = document.querySelector('.glass-container');
+  if (!card) return;
+  const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+  const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+  card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
 });
 """
 
@@ -93,20 +93,20 @@ def index(): return HTML_HOME
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-if request.method == 'POST':
-code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+  if request.method == 'POST':
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
-db.session.commit()
-return f"<h1>YOUR CODE: {code}</h1>"
-return HTML_REGISTER
+    db.session.commit()
+    return f"<h1>YOUR CODE: {code}</h1>"
+  return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user); return redirect(url_for('dashboard'))
-return "ACCESS DENIED."
+  if request.method == 'POST':
+    user = Business.query.filter_by(username=request.form['username']).first()
+    if user and check_password_hash(user.password, request.form['password']):
+      login_user(user); return redirect(url_for('dashboard'))
+    return "ACCESS DENIED."
 return HTML_LOGIN
 
 @app.route('/logout')
@@ -116,67 +116,67 @@ def logout(): logout_user(); return redirect(url_for('index'))
 @app.route('/dashboard')
 @login_required
 def dashboard():
-if not current_user.is_authenticated: return redirect(url_for('login'))
-today = date.today()
-bonus = ""
-if current_user.last_login != today:
-current_user.points += 20
-current_user.last_login = today
-db.session.commit()
-bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
-current_user.level = (current_user.points // 100) + 1
-db.session.commit()
-progress = current_user.points % 100
-progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p></div>"
-return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.all(), points=current_user.points, bonus=bonus, progress_html=progress_html)
+  if not current_user.is_authenticated: return redirect(url_for('login'))
+  today = date.today()
+  bonus = ""
+  if current_user.last_login != today:
+    current_user.points += 20
+    current_user.last_login = today
+    db.session.commit()
+    bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
+  current_user.level = (current_user.points // 100) + 1
+  db.session.commit()
+  progress = current_user.points % 100
+  progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p></div>"
+  return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.all(), points=current_user.points, bonus=bonus, progress_html=progress_html)
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-message = request.form['message']
-emotion = analyze_emotion(message)
+  if request.method == 'POST':
+    message = request.form['message']
+    emotion = analyze_emotion(message)
 db.session.add(Feedback(message=message, emotion=emotion))
-if current_user.is_authenticated:
+    if current_user.is_authenticated:
 current_user.points += 10
 db.session.commit()
-if 'رضایت' in emotion:
-media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
-elif 'ناراضی' in emotion:
-media = "<h2 style='color:#ff0080;'>شما در نقش یک فرد غمگین فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4' type='video/mp4'></video>"
-else:
-media = "<h2>احساس شما خنثی است.</h2>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-neon'><div class='glass-container'><h1>تحلیل احساسات</h1><div class='msg'><b>پیام شما:</b> {message}</div><div class='msg'><b>احساس:</b> {emotion}</div>{media}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
-return HTML_FEEDBACK
+    if 'رضایت' in emotion:
+    media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
+    elif 'ناراضی' in emotion:
+      media = "<h2 style='color:#ff0080;'>شما در نقش یک فرد غمگین فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4' type='video/mp4'></video>"
+    else:
+        media = "<h2>احساس شما خنثی است.</h2>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-neon'><div class='glass-container'><h1>تحلیل احساسات</h1><div class='msg'><b>پیام شما:</b> {message}</div><div class='msg'><b>احساس:</b> {emotion}</div>{media}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
+  return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
-if request.method == 'POST':
-name = request.form['name']
-message = request.form['message']
-date_val = request.form['date']
+  if request.method == 'POST':
+    name = request.form['name']
+    message = request.form['message']
+    date_val = request.form['date']
 db.session.add(TimeCapsule(name=name, message=message, date=date_val))
-if current_user.is_authenticated:
-current_user.points += 10
-db.session.commit()
-future_prediction = f"<div class='msg' style='border-color: #00ffcc;'><h3>🌌 پیش‌بینی آینده برای پیام شما:</h3><p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p><p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p></div>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
-return HTML_CAPSULE
+    if current_user.is_authenticated:
+      current_user.points += 10
+      db.session.commit()
+    future_prediction = f"<div class='msg' style='border-color: #00ffcc;'><h3>🌌 پیش‌بینی آینده برای پیام شما:</h3><p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p><p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p></div>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
+  return HTML_CAPSULE
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
-if request.method == 'POST':
-if 'chats' not in session: session['chats'] = []
+  if request.method == 'POST':
+    if 'chats' not in session: session['chats'] = []
 session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
 session.modified = True
-if current_user.is_authenticated:
-current_user.points += 5
-db.session.commit()
-return redirect(url_for('memory_portal'))
-return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
+  if current_user.is_authenticated:
+      current_user.points += 5
+      db.session.commit()
+    return redirect(url_for('memory_portal'))
+  return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
 with app.app_context():
-db.create_all()
+  db.create_all()
 
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port)
+  port = int(os.environ.get('PORT', 5000))
+  app.run(host='0.0.0.0', port=port)

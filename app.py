@@ -54,36 +54,45 @@ def aura_brain(user_input):
     if "خوشحال" in text: return "شادی تو عالیه!"
     return "من به تو گوش می‌دهم."
 
+
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Vazirmatn', Tahoma; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; overflow: hidden; position: relative; transition: background 0.5s; }
-.glass-container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 40px; width: 100%; max-width: 600px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; z-index: 10; }
-h1 { font-size: 2.5rem; margin-bottom: 20px; }
-input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; font-family: 'Vazirmatn', Tahoma; outline: none; }
+body { font-family: 'Vazirmatn', Tahoma; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; overflow: hidden; background: #000; perspective: 1000px; }
+.glass-container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 40px; width: 100%; max-width: 600px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; z-index: 10; transition: transform 0.1s ease-out; transform-style: preserve-3d; color: #fff; }
+h1 { font-size: 2.5rem; margin-bottom: 20px; transform: translateZ(50px); }
+input, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; font-family: 'Vazirmatn', Tahoma; outline: none; transform: translateZ(30px); }
 button { cursor: pointer; font-weight: bold; border-radius: 30px; transition: 0.3s; }
-a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; }
+a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; transform: translateZ(20px); color: #fff; }
 .msg { padding: 15px; margin-top: 15px; border-radius: 10px; text-align: right; }
 .theme-btn { display: inline-block; padding: 8px 15px; margin: 5px; border-radius: 20px; cursor: pointer; font-size: 0.9rem; border: 1px solid; text-decoration: none; }
-.theme-paradise { background: linear-gradient(135deg, #e0f7fa, #b2ebf2); color: #006064; }
-.theme-paradise .glass-container { background: rgba(255,255,255,0.7); border-color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-.theme-paradise a { color: #00838f; }
-.theme-paradise input, .theme-paradise textarea { background: #fff; border: 1px solid #80deea; color: #006064; }
-.theme-paradise button { background: #006064; color: #fff; }
-.theme-paradise .msg { background: rgba(0,0,0,0.05); border-left: 4px solid #006064; }
-.theme-zombie { background: #1a0000; color: #ff3333; animation: shake 0.5s infinite; }
-.theme-zombie .glass-container { background: rgba(50, 0, 0, 0.8); border-color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+
+/* پوسته بهشتی (کهکشانی) */
+.theme-paradise { background: radial-gradient(circle at center, #1a2a6c, #0d0d2b, #000); }
+.theme-paradise .glass-container { border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.2); color: #fff; }
+.theme-paradise a { color: #fff; }
+.theme-paradise input, .theme-paradise textarea { background: rgba(255,255,255,0.1); border: 1px solid #fff; color: #fff; }
+.theme-paradise button { background: #fff; color: #000; }
+.theme-paradise .msg { background: rgba(255,255,255,0.1); border-left: 4px solid #fff; }
+
+/* پوسته مردگان (زامبی) */
+.theme-zombie { background: #1a0000; animation: shake 0.5s infinite; }
+.theme-zombie .glass-container { background: rgba(50, 0, 0, 0.8); border-color: #ff0000; box-shadow: 0 0 20px #ff0000; color: #ff3333; }
 .theme-zombie a { color: #ff6666; }
 .theme-zombie input, .theme-zombie textarea { background: #000; border: 1px solid #ff0000; color: #ff3333; }
 .theme-zombie button { background: #ff0000; color: #000; }
 .theme-zombie .msg { background: rgba(255,0,0,0.1); border-left: 4px solid #ff0000; }
 @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+
+/* پوسته نئونی */
 .theme-neon { background: #0a0a0a; color: #00ffcc; }
 .theme-neon .glass-container { border-color: #00ffcc; box-shadow: 0 0 30px rgba(0,255,204,0.2); }
 .theme-neon a { color: #00ffcc; }
 .theme-neon input, .theme-neon textarea { background: #111; border: 1px solid #00ffcc; color: #00ffcc; }
 .theme-neon button { background: #00ffcc; color: #000; }
 .theme-neon .msg { background: rgba(0,255,204,0.05); border-left: 4px solid #00ffcc; }
+
+/* پوسته سیاه‌چال */
 .theme-void { background: #000; color: #888; }
 .theme-void .glass-container { background: #111; border-color: #333; }
 .theme-void a { color: #fff; }
@@ -91,6 +100,7 @@ a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; 
 .theme-void button { background: #fff; color: #000; }
 .theme-void .msg { background: rgba(255,255,255,0.05); border-left: 4px solid #fff; }
 """
+
 
 @app.route('/')
 def index():

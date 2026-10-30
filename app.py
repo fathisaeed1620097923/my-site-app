@@ -173,9 +173,9 @@ def memory_portal():
     if request.method == 'POST':
         if 'chats' not in session: session['chats'] = []
         session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
-session.modified = True
+        session.modified = True
         if current_user.is_authenticated:
-        current_user.points += 5
+            current_user.points += 5
         db.session.commit()
         return redirect(url_for('memory_portal'))
     chats = session.get('chats', [])

@@ -159,11 +159,11 @@ def feedback():
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
     if request.method == 'POST':
-db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
-    if current_user.is_authenticated:
-    current_user.points += 10
-db.session.commit()
-return redirect(url_for('time_capsule'))
+        db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
+        if current_user.is_authenticated:
+            current_user.points += 10
+        db.session.commit()
+        return redirect(url_for('time_capsule'))
     capsules = TimeCapsule.query.all()
     cap_html = ''.join([f"<div class='msg'>{c.name}: {c.message}</div>" for c in capsules])
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{cap_html}<a href='/'>BACK</a></div></body></html>"

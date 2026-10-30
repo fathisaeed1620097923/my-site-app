@@ -141,7 +141,7 @@ def feedback():
         db.session.commit()
     if 'رضایت' in emotion:
         media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
-        elif 'ناراضی' in emotion:
+    elif 'ناراضی' in emotion:
         media = "<h2 style='color:#ff0080;'>شما در نقش یک فرد غمگین فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4' type='video/mp4'></video>"
     else:
         media = "<h2>احساس شما خنثی است.</h2>"

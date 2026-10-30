@@ -140,9 +140,9 @@ def feedback():
         current_user.points += 10
         db.session.commit()
     if 'رضایت' in emotion:
-    media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
-    elif 'ناراضی' in emotion:
-    media = "<h2 style='color:#ff0080;'>شما در نقش یک فرد غمگین فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4' type='video/mp4'></video>"
+        media = "<h2 style='color:#00ffcc;'>شما در نقش یک فرد شاد فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4' type='video/mp4'></video>"
+        elif 'ناراضی' in emotion:
+        media = "<h2 style='color:#ff0080;'>شما در نقش یک فرد غمگین فرو رفتید...</h2><video width='100%' controls autoplay loop><source src='https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4' type='video/mp4'></video>"
     else:
         media = "<h2>احساس شما خنثی است.</h2>"
     return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-neon'><div class='glass-container'><h1>تحلیل احساسات</h1><div class='msg'><b>پیام شما:</b> {message}</div><div class='msg'><b>احساس:</b> {emotion}</div>{media}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
@@ -150,10 +150,10 @@ def feedback():
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
-  if request.method == 'POST':
-    name = request.form['name']
-    message = request.form['message']
-    date_val = request.form['date']
+    if request.method == 'POST':
+        name = request.form['name']
+        message = request.form['message']
+        date_val = request.form['date']
 db.session.add(TimeCapsule(name=name, message=message, date=date_val))
     if current_user.is_authenticated:
       current_user.points += 10

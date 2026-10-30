@@ -28,30 +28,30 @@ level = db.Column(db.Integer, default=1)
 last_login = db.Column(db.Date)
 
 class Feedback(db.Model):
-id = db.Column(db.Integer, primary_key=True)
-message = db.Column(db.Text, nullable=False)
-emotion = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text, nullable=False)
+    emotion = db.Column(db.String(50), nullable=False)
 
 class TimeCapsule(db.Model):
-id = db.Column(db.Integer, primary_key=True)
-name = db.Column(db.String(100), nullable=False)
-message = db.Column(db.Text, nullable=False)
-date = db.Column(db.String(20), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    date = db.Column(db.String(20), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id): return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
-return 'خنثی 😐'
+    text = text.lower()
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد']): return 'رضایت 😊'
+    if any(w in text for w in ['غمگین', 'خسته', 'بد']): return 'ناراضی 😢'
+    return 'خنثی 😐'
 
 def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
-if "خوشحال" in text: return "شادی تو عالیه!"
-return "من به تو گوش می‌دهم."
+    text = user_input.lower()
+    if "خسته" in text: return "من اینجا هستم تا کمکت کنم."
+    if "خوشحال" in text: return "شادی تو عالیه!"
+    return "من به تو گوش می‌دهم."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
@@ -93,32 +93,32 @@ a { text-decoration: none; display: block; margin-top: 15px; font-size: 1.1rem; 
 
 @app.route('/')
 def index():
-theme = request.args.get('theme', session.get('theme', 'theme-neon'))
-session['theme'] = theme
-sound_html = ""
-if theme == 'theme-paradise': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-zombie': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-neon': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' type='audio/mpeg'></audio>"
-elif theme == 'theme-void': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' type='audio/mpeg'></audio>"
-theme_selector = "<div style='margin-bottom: 20px;'><span style='font-size: 0.9rem; opacity: 0.7;'>انتخاب دنیا:</span><br><a href='/?theme=theme-paradise' class='theme-btn' style='color:#006064; border-color:#006064;'>بهشتی</a><a href='/?theme=theme-zombie' class='theme-btn' style='color:#ff3333; border-color:#ff3333;'>مردگان</a><a href='/?theme=theme-neon' class='theme-btn' style='color:#00ffcc; border-color:#00ffcc;'>سایبرپانک</a><a href='/?theme=theme-void' class='theme-btn' style='color:#fff; border-color:#fff;'>سیاه‌چال</a></div>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{theme}'>{sound_html}<div class='glass-container'><h1>OMNI-PLATFORM</h1>{theme_selector}<a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
+    theme = request.args.get('theme', session.get('theme', 'theme-neon'))
+    session['theme'] = theme
+    sound_html = ""
+    if theme == 'theme-paradise': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-zombie': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-neon': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' type='audio/mpeg'></audio>"
+    elif theme == 'theme-void': sound_html = "<audio autoplay loop><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' type='audio/mpeg'></audio>"
+    theme_selector = "<div style='margin-bottom: 20px;'><span style='font-size: 0.9rem; opacity: 0.7;'>انتخاب دنیا:</span><br><a href='/?theme=theme-paradise' class='theme-btn' style='color:#006064; border-color:#006064;'>بهشتی</a><a href='/?theme=theme-zombie' class='theme-btn' style='color:#ff3333; border-color:#ff3333;'>مردگان</a><a href='/?theme=theme-neon' class='theme-btn' style='color:#00ffcc; border-color:#00ffcc;'>سایبرپانک</a><a href='/?theme=theme-void' class='theme-btn' style='color:#fff; border-color:#fff;'>سیاه‌چال</a></div>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='{theme}'>{sound_html}<div class='glass-container'><h1>OMNI-PLATFORM</h1>{theme_selector}<a href='/login'>ورود کسب‌وکارها</a><a href='/feedback'>ثبت بازخورد</a><a href='/time-capsule'>کپسول زمان</a><a href='/memory-portal'>پورتال خاطرات</a></div></body></html>"
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-if request.method == 'POST':
-code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+    if request.method == 'POST':
+    code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 db.session.add(Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code))
-db.session.commit()
-return f"<h1>YOUR CODE: {code}</h1>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
+    db.session.commit()
+        return f"<h1>YOUR CODE: {code}</h1>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>NEW PROTOCOL</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>INIT</button></form></div></body></html>"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user); return redirect(url_for('dashboard'))
-return "ACCESS DENIED."
+    if request.method == 'POST':
+    user = Business.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+        login_user(user); return redirect(url_for('dashboard'))
+        return "ACCESS DENIED."
 return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>AUTHENTICATION</h1><form method='POST'><input type='text' name='username' placeholder='USERNAME' required><input type='password' name='password' placeholder='PASSWORD' required><button type='submit'>ACCESS</button></form><a href='/register'>REGISTER</a></div></body></html>"
 
 @app.route('/logout')
@@ -128,62 +128,62 @@ def logout(): logout_user(); return redirect(url_for('index'))
 @app.route('/dashboard')
 @login_required
 def dashboard():
-if not current_user.is_authenticated:
-return redirect(url_for('login'))
-today = date.today()
-bonus = ""
-if current_user.last_login != today:
-current_user.points += 20
-current_user.last_login = today
-db.session.commit()
-bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
-current_user.level = (current_user.points // 100) + 1
-db.session.commit()
-progress = current_user.points % 100
-progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div class='progress-bar'><div class='progress-fill' style='width: {progress}%;'></div></div></div>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
+    today = date.today()
+    bonus = ""
+    if current_user.last_login != today:
+        current_user.points += 20
+        current_user.last_login = today
+        db.session.commit()
+        bonus = "<div class='msg' style='border-color: #00ffcc; color: #00ffcc;'>🎉 پاداش ورود روزانه: +۲۰ امتیاز!</div>"
+    current_user.level = (current_user.points // 100) + 1
+    db.session.commit()
+    progress = current_user.points % 100
+    progress_html = f"<div style='margin-bottom: 20px;'><p>لِوِل: <b>{current_user.level}</b></p><p>امتیاز: {current_user.points}</p><div class='progress-bar'><div class='progress-fill' style='width: {progress}%;'></div></div></div>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>DASHBOARD</h1>{bonus}{progress_html}<h3>CODE: {current_user.unique_code}</h3>{''.join([f'<div class=msg>{f.emotion}: {f.message}</div>' for f in Feedback.query.all()])}<a href='/logout'>LOGOUT</a></div></body></html>"
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-message = request.form['message']
-emotion = analyze_emotion(message)
+    if request.method == 'POST':
+        message = request.form['message']
+        emotion = analyze_emotion(message)
 db.session.add(Feedback(message=message, emotion=emotion))
-if current_user.is_authenticated:
-current_user.points += 10
-db.session.commit()
-return f"<h1>SAVED: {emotion}</h1>"
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>آینه احساسی</h1><form method='POST'><textarea name='message' placeholder='امروز چه احساسی داری؟' required></textarea><button type='submit'>تحلیل و ورود به نقش</button></form><a href='/'>BACK</a></div></body></html>"
+        if current_user.is_authenticated:
+        current_user.points += 10
+        db.session.commit()
+        return f"<h1>SAVED: {emotion}</h1>"
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>آینه احساسی</h1><form method='POST'><textarea name='message' placeholder='امروز چه احساسی داری؟' required></textarea><button type='submit'>تحلیل و ورود به نقش</button></form><a href='/'>BACK</a></div></body></html>"
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
-if request.method == 'POST':
+    if request.method == 'POST':
 db.session.add(TimeCapsule(name=request.form['name'], message=request.form['message'], date=request.form['date']))
-if current_user.is_authenticated:
-current_user.points += 10
+    if current_user.is_authenticated:
+    current_user.points += 10
 db.session.commit()
 return redirect(url_for('time_capsule'))
-capsules = TimeCapsule.query.all()
-cap_html = ''.join([f"<div class='msg'>{c.name}: {c.message}</div>" for c in capsules])
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{cap_html}<a href='/'>BACK</a></div></body></html>"
+    capsules = TimeCapsule.query.all()
+    cap_html = ''.join([f"<div class='msg'>{c.name}: {c.message}</div>" for c in capsules])
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>TIME CAPSULE</h1><form method='POST'><input type='text' name='name' placeholder='NAME' required><textarea name='message' placeholder='MESSAGE' required></textarea><input type='date' name='date' required><button type='submit'>LOCK</button></form>{cap_html}<a href='/'>BACK</a></div></body></html>"
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
-if request.method == 'POST':
-if 'chats' not in session: session['chats'] = []
-session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
+    if request.method == 'POST':
+        if 'chats' not in session: session['chats'] = []
+        session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
 session.modified = True
-if current_user.is_authenticated:
-current_user.points += 5
-db.session.commit()
-return redirect(url_for('memory_portal'))
-chats = session.get('chats', [])
-chat_html = ''.join([f"<div class='msg'>YOU: {c['user']}<br>AI: {c['ai']}</div>" for c in chats])
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>PORTAL</h1>{chat_html}<form method='POST'><input type='text' name='message' placeholder='TALK...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
+        if current_user.is_authenticated:
+        current_user.points += 5
+        db.session.commit()
+        return redirect(url_for('memory_portal'))
+    chats = session.get('chats', [])
+    chat_html = ''.join([f"<div class='msg'>YOU: {c['user']}<br>AI: {c['ai']}</div>" for c in chats])
+    return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body class='theme-dark'><div class='glass-container'><h1>PORTAL</h1>{chat_html}<form method='POST'><input type='text' name='message' placeholder='TALK...' required><button type='submit'>SEND</button></form><a href='/'>BACK</a></div></body></html>"
 
 with app.app_context():
-db.create_all()
+    db.create_all()
 
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

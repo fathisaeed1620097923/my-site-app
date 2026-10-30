@@ -133,8 +133,8 @@ def dashboard():
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
-    message = request.form['message']
-    emotion = analyze_emotion(message)
+        message = request.form['message']
+        emotion = analyze_emotion(message)
 db.session.add(Feedback(message=message, emotion=emotion))
     if current_user.is_authenticated:
     current_user.points += 10

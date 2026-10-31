@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'future-500-years')
 # تنظیمات دیتابیس رندر
 db_url = 'postgresql://myuser:5VAUU122WDEqj8UepCJypXIpdA8Vl8ip@dpg-dbi7boui0phs73d2ime0-a.oregon-postgres.render.com/mydb_ecw3'
 if db_url.startswith("postgres://"):
-db_url = db_url.replace("postgres://", "postgresql://", 1)
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -51,16 +51,16 @@ date = db.Column(db.String(20), nullable=False)
 def load_user(user_id): return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت', 'معرکه']): return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد', 'ناراضی', 'عصبانی', 'افتضاح']): return 'ناراضی 😢'
-return 'خنثی 😐'
+    text = text.lower()
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت', 'معرکه']): return 'رضایت 😊'
+    if any(w in text for w in ['غمگین', 'خسته', 'بد', 'ناراضی', 'عصبانی', 'افتضاح']): return 'ناراضی 😢'
+    return 'خنثی 😐'
 
 def aura_brain(user_input):
-text = user_input.lower()
-if "خسته" in text: return "من اینجا هستم تا کمکت کنم. انرژی را از من بگیر."
-if "خوشحال" in text: return "شادی تو عالیه! این فرکانس را بالا نگه دار."
-return "من به تو گوش می‌دهم. بگو..."
+    text = user_input.lower()
+    if "خسته" in text: return "من اینجا هستم تا کمکت کنم. انرژی را از من بگیر."
+    if "خوشحال" in text: return "شادی تو عالیه! این فرکانس را بالا نگه دار."
+    return "من به تو گوش می‌دهم. بگو..."
 
 # ----------------- CSS -----------------
 CSS = """
@@ -249,13 +249,13 @@ def index(): return HTML_HOME
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-if request.method == 'POST':
-code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-new_business = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
-db.session.add(new_business)
-db.session.commit()
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>YOUR CODE: {code}</h1><p>این کد یکتای پنل شماست. آن را حفظ کنید.</p><a href='/login'>رفتن به صفحه ورود</a></div></body></html>"
-return HTML_REGISTER
+    if request.method == 'POST':
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        new_business = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
+        db.session.add(new_business)
+        db.session.commit()
+        return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>YOUR CODE: {code}</h1><p>این کد یکتای پنل شماست. آن را حفظ کنید.</p><a href='/login'>رفتن به صفحه ورود</a></div></body></html>"
+    return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -287,99 +287,99 @@ return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, fee
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-message = request.form['message']
-emotion = analyze_emotion(message)
+    if request.method == 'POST':
+        message = request.form['message']
+        emotion = analyze_emotion(message)
 
-new_feedback = Feedback(message=message, emotion=emotion)
-db.session.add(new_feedback)
-if current_user.is_authenticated: current_user.points += 10
-db.session.commit()
+        new_feedback = Feedback(message=message, emotion=emotion)
+        db.session.add(new_feedback)
+        if current_user.is_authenticated: current_user.points += 10
+        db.session.commit()
 
-advice = ""
-video_url = ""
-theme_class = "angel-theme" if 'رضایت' in emotion else "zombie-theme" if 'ناراضی' in emotion else ""
-glitch_class = "glitch-active" if 'ناراضی' in emotion else ""
-cracked_class = "cracked" if 'ناراضی' in emotion else ""
+        advice = ""
+        video_url = ""
+        theme_class = "angel-theme" if 'رضایت' in emotion else "zombie-theme" if 'ناراضی' in emotion else ""
+        glitch_class = "glitch-active" if 'ناراضی' in emotion else ""
+        cracked_class = "cracked" if 'ناراضی' in emotion else ""
 
-if 'رضایت' in emotion:
-video_url = "https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4"
-advice = "من ۲۰ سال بعدِ تو هستم. می‌بینم که امروز چقدر شادی. این لحظه را در قلبِ کوانتومی‌ات حفظ کن. این انرژی مثبت، سوختِ موشکِ مسیرِ من بود."
-elif 'ناراضی' in emotion:
-video_url = "https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4"
-advice = "من ۲۰ سال بعدِ تو هستم. می‌دانم الان چقدر سخت است. اما به گذشته نگاه می‌کنم و می‌بینم این تاریکی فقط یک ابر زودگذر بود. نفس بکش. من از این سد عبور کردم، تو هم می‌توانی."
-else:
-video_url = "https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4"
-advice = "من ۲۰ سال بعدِ تو هستم. مسیر تو در حال شکل‌گیری است. از این سکون استفاده کن تا ستاره بعدی‌ات را پیدا کنی."
+        if 'رضایت' in emotion:
+            video_url = "https://assets.mixkit.co/videos/preview/mixkit-happy-woman-dancing-in-a-field-of-flowers-1240-large.mp4"
+            advice = "من ۲۰ سال بعدِ تو هستم. می‌بینم که امروز چقدر شادی. این لحظه را در قلبِ کوانتومی‌ات حفظ کن. این انرژی مثبت، سوختِ موشکِ مسیرِ من بود."
+        elif 'ناراضی' in emotion:
+            video_url = "https://assets.mixkit.co/videos/preview/mixkit-rain-drops-on-a-window-1088-large.mp4"
+            advice = "من ۲۰ سال بعدِ تو هستم. می‌دانم الان چقدر سخت است. اما به گذشته نگاه می‌کنم و می‌بینم این تاریکی فقط یک ابر زودگذر بود. نفس بکش. من از این سد عبور کردم، تو هم می‌توانی."
+        else:
+            video_url = "https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4"
+            advice = "من ۲۰ سال بعدِ تو هستم. مسیر تو در حال شکل‌گیری است. از این سکون استفاده کن تا ستاره بعدی‌ات را پیدا کنی."
 
 # پردازش عکس کاربر (در صورت آپلود)
-image_html = ""
-if 'user_image' in request.files:
-file = request.files['user_image']
-if file and file.filename != '':
+        image_html = ""
+        if 'user_image' in request.files:
+            file = request.files['user_image']
+            if file and file.filename != '':
 # تبدیل عکس به base64 برای نمایش بدون ذخیره در سرور
-img_data = base64.b64encode(file.read()).decode('utf-8')
-image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' alt='نسخه آینده شما'>"
+                img_data = base64.b64encode(file.read()).decode('utf-8')
+                image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' alt='نسخه آینده شما'>"
 
-return f"""
-<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>
-{CSS}
-.video-bg {{ position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.3; }}
-</style></head>
-<body class='{theme_class} {glitch_class} {cracked_class}'>
-<video autoplay loop muted class='video-bg'><source src='{video_url}' type='video/mp4'></video>
-<div class='glass-container' style='max-width: 750px;'>
-<h1 style='color:#00ffcc; text-shadow: 0 0 10px #00ffcc;'>پیوند با آینده برقرار شد</h1>
-{image_html}
-<div class='msg' style='border-left-color: #00ffcc;'><b>شما:</b> {message}</div>
-<div class='msg' style='border-left-color: #ff0080;'><b>احساس شناسایی شده:</b> {emotion}</div>
-<div class='msg' style='border-left-color: #fff; background: rgba(0,255,204,0.1); line-height: 1.8;'>
-<b style='color:#fff;'>نصیحت از نسخه ۲۰ سال بعدِ شما:</b><br><br>
-<span class='typing-effect'>{advice}</span>
-</div>
-<a href='/'>بازگشت به کهکشان</a>
-<a href='/feedback' style='color:#ffcc00;'>ارسال سیگنال جدید</a>
-</div>
-<script>{JS}</script>
-</body></html>
-"""
-return HTML_FEEDBACK
+        return f"""
+        <html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>
+        {CSS}    
+        .video-bg {{ position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0.3; }}
+        </style></head>
+        <body class='{theme_class} {glitch_class} {cracked_class}'>
+            <video autoplay loop muted class='video-bg'><source src='{video_url}' type='video/mp4'></video>
+            <div class='glass-container' style='max-width: 750px;'>
+                <h1 style='color:#00ffcc; text-shadow: 0 0 10px #00ffcc;'>پیوند با آینده برقرار شد</h1>
+                {image_html}
+                <div class='msg' style='border-left-color: #00ffcc;'><b>شما:</b> {message}</div>
+                <div class='msg' style='border-left-color: #ff0080;'><b>احساس شناسایی شده:</b> {emotion}</div>
+                <div class='msg' style='border-left-color: #fff; background: rgba(0,255,204,0.1); line-height: 1.8;'>
+                    <b style='color:#fff;'>نصیحت از نسخه ۲۰ سال بعدِ شما:</b><br><br>
+                    <span class='typing-effect'>{advice}</span>
+                </div>
+                <a href='/'>بازگشت به کهکشان</a>
+                <a href='/feedback' style='color:#ffcc00;'>ارسال سیگنال جدید</a>
+            </div>
+            <script>{JS}</script>
+        </body></html>
+        """
+    return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
-if request.method == 'POST':
-name = request.form['name']
-message = request.form['message']
-date_val = request.form['date']
+    if request.method == 'POST':
+        name = request.form['name']
+        message = request.form['message']
+        date_val = request.form['date']
 
-new_capsule = TimeCapsule(name=name, message=message, date=date_val)
-db.session.add(new_capsule)
-if current_user.is_authenticated: current_user.points += 10
-db.session.commit()
+        new_capsule = TimeCapsule(name=name, message=message, date=date_val)
+        db.session.add(new_capsule)
+        if current_user.is_authenticated: current_user.points += 10
+        db.session.commit()
 
-future_prediction = f"""
-<div class='msg' style='border-color: #00ffcc;'>
-<h3>🌌 پیش‌بینی آینده برای پیام شما:</h3>
-<p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p>
-<p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p>
-</div>
-"""
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
+        future_prediction = f"""
+        <div class='msg' style='border-color: #00ffcc;'>
+            <h3>🌌 پیش‌بینی آینده برای پیام شما:</h3>
+            <p>پیام شما در تاریخ <b>{date_val}</b> به یک اثر باستانی دیجیتال تبدیل شده است.</p>
+            <p>شانس زنده ماندن در شبکه کوانتومی: <b style='color:#00ffcc;'>۹۹.۸٪</b></p>
+        </div>
+        """
+        return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'><h1>ثبت شد!</h1>{future_prediction}<a href='/'>بازگشت</a></div><script>{JS}</script></body></html>"
 
-capsules_list = TimeCapsule.query.all()
-return render_template_string(HTML_CAPSULE, capsules=capsules_list)
+    capsules_list = TimeCapsule.query.all()
+    return render_template_string(HTML_CAPSULE, capsules=capsules_list)
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
-if request.method == 'POST':
-if 'chats' not in session: session['chats'] = []
-session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
-session.modified = True
-if current_user.is_authenticated:
-current_user.points += 5
-db.session.commit()
-return redirect(url_for('memory_portal'))
-return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
+    if request.method == 'POST':
+        if 'chats' not in session: session['chats'] = []
+            session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
+        session.modified = True
+        if current_user.is_authenticated:
+            current_user.points += 5
+            db.session.commit()
+        return redirect(url_for('memory_portal'))
+    return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
 with app.app_context():
 db.create_all()

@@ -373,7 +373,8 @@ def time_capsule():
 def memory_portal():
     if request.method == 'POST':
         if 'chats' not in session: session['chats'] = []
-            session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
+        
+        session['chats'].append({'user': request.form['message'], 'ai': aura_brain(request.form['message'])})
         session.modified = True
         if current_user.is_authenticated:
             current_user.points += 5

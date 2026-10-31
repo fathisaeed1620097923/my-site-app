@@ -259,31 +259,31 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user)
-return redirect(url_for('dashboard'))
-return "<html><body style='background:#000; color:red; text-align:center; padding:50px;'><h1>ACCESS DENIED.</h1><a href='/login' style='color:#fff;'>Try Again</a></body></html>"
-return HTML_LOGIN
+    if request.method == 'POST':
+        user = Business.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        return "<html><body style='background:#000; color:red; text-align:center; padding:50px;'><h1>ACCESS DENIED.</h1><a href='/login' style='color:#fff;'>Try Again</a></body></html>"
+    return HTML_LOGIN
 
 @app.route('/logout')
 @login_required
 def logout():
-logout_user()
-return redirect(url_for('index'))
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-today = date.today()
-if current_user.last_login != today:
-current_user.points += 20
-current_user.last_login = today
-db.session.commit()
-current_user.level = (current_user.points // 100) + 1
-db.session.commit()
-return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.order_by(Feedback.id.desc()).all(), points=current_user.points, level=current_user.level)
+    today = date.today()
+    if current_user.last_login != today:
+        current_user.points += 20
+        current_user.last_login = today
+        db.session.commit()
+    current_user.level = (current_user.points // 100) + 1
+    db.session.commit()
+    return render_template_string(HTML_DASHBOARD, code=current_user.unique_code, feedbacks=Feedback.query.order_by(Feedback.id.desc()).all(), points=current_user.points, level=current_user.level)
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
@@ -382,8 +382,8 @@ def memory_portal():
     return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
 with app.app_context():
-db.create_all()
+    db.create_all()
 
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

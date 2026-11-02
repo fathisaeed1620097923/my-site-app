@@ -66,7 +66,7 @@ def analyze_emotion(text):
 
 def aura_brain(user_input):
     text = user_input.lower()
-        if "خسته" in text:
+    if "خسته" in text:
         return "من اینجا هستم تا کمکت کنم. انرژی را از من بگیر."
     if "خوشحال" in text:
         return "شادی تو عالیه! این فرکانس را بالا نگه دار."

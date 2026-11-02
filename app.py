@@ -58,7 +58,7 @@ def load_user(user_id):
 
 def analyze_emotion(text):
     text = text.lower()
-        if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت']):
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت']):
         return 'رضایت 😊'
         if any(w in text for w in ['غمگین', 'خسته', 'بد', 'ناراضی', 'عصبی', 'پیر', 'ترس']):
         return 'نارضایتی 😢'

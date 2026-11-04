@@ -115,6 +115,7 @@ HTML_HOME = """
 </body></html>
 """
 
+
 HTML_FEEDBACK = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
 .feedback-box { display: flex; flex-direction: column; gap: 20px; }

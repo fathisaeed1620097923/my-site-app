@@ -122,7 +122,7 @@ HTML_FEEDBACK = """
 </style></head><body>
 <div class='glass-container'>
 <h1>آینه احساسی</h1>
-<p>امروز از خدمات ما چطور بودید؟ (یا چه احساسی داری؟)</p>
+<p>امروز چه احساسی داری؟ (یا از خدمات ما چطور بودید؟)</p>
 <form method='POST' class='feedback-box'>
 <div class='emoji-container'>
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😡')">😡</button>
@@ -132,7 +132,7 @@ HTML_FEEDBACK = """
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😍')">😍</button>
 </div>
 <input type='hidden' name='selected_emoji' id='selected_emoji' value=''>
-<textarea name='message' placeholder='نظر خود را بنویسید (اختیاری)...' style='background: rgba(0,0,0,0.3);'></textarea>
+<textarea name='message' placeholder='هر چیزی که در دلت داری بنویس... (مثلاً نگران آینده‌ام یا از خدمات راضی بودم)' required style='background: rgba(0,0,0,0.3); height: 120px;'></textarea>
 <button type='submit' style='background: #00ffcc; font-size: 1.2rem;'>ارسال و دریافت پاسخ</button>
 </form>
 <a href='/'>BACK TO HOME</a>

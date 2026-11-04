@@ -75,7 +75,7 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
         # ⚠️ در خط زیر، به جای hf_کلید_خود_را_اینجا_بچسبانید، کلیدی که ساختی را پیست کن
          headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
 
-        payload = {
+         payload = {
             "inputs": prompt,
             "parameters": {"max_new_tokens": 100, "return_full_text": False}
         }

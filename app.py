@@ -60,19 +60,24 @@ def analyze_emotion(text):
     return 'خنثی 😐'
 
 def aura_brain(user_input, person_name="عزیز از دست رفته", is_business=False):
+# بررسی می‌کنیم که آیا اصلاً توکن در سرور تعریف شده است یا نه
+    hf_token = os.environ.get('HF_TOKEN')
+
+    if not hf_token:
+        return "سیستم هوش مصنوعی هنوز راه‌اندازی نشده است. لطفاً بعداً تلاش کنید."  
     if is_business:
         prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده."
     else:
         prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی و دلسوزانه بده. حداکثر ۳ جمله."
 
     try:
-        API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
+         API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
         # ⚠️ در خط زیر، به جای hf_کلید_خود_را_اینجا_بچسبانید، کلیدی که ساختی را پیست کن
-        headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
+         headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
 
         payload = {
-        "inputs": prompt,
-        "parameters": {"max_new_tokens": 100, "return_full_text": False}
+            "inputs": prompt,
+            "parameters": {"max_new_tokens": 100, "return_full_text": False}
         }
 
         response = requests.post(API_URL, headers=headers, json=payload, timeout=20)

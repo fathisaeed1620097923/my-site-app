@@ -65,6 +65,7 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
 
     if not hf_token:
         return "سیستم هوش مصنوعی هنوز راه‌اندازی نشده است. لطفاً بعداً تلاش کنید."  
+        
     if is_business:
         prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده."
     else:
@@ -74,7 +75,6 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
          API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
         # ⚠️ در خط زیر، به جای hf_کلید_خود_را_اینجا_بچسبانید، کلیدی که ساختی را پیست کن
          headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
-
          payload = {
             "inputs": prompt,
             "parameters": {"max_new_tokens": 100, "return_full_text": False}

@@ -13,8 +13,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'future-500-years'
 
-db_url = 'postgresql+psycopg2://myuser:5VAUU122WDEqj8UepCJypXIpdA8Vl8ip@dpg-dbi7boui0phs73d2ime0-a.oregon-postgres.render.com/mydb_ecw3'
-if db_url.startswith("postgresql+psycopg2://"):
+# تنظیمات دیتابیس رندر
+db_url = 'postgresql://myuser:5VAUU122WDEqj8UepCJypXIpdA8Vl8ip@dpg-dbi7boui0phs73d2ime0-a.oregon-postgres.render.com/mydb_ecw3'
+if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
@@ -49,6 +50,7 @@ class Feedback(db.Model):
 def load_user(user_id):
     return Business.query.get(int(user_id))
 
+# ----------------- موتور هوش مصنوعی -----------------
 def analyze_emotion(text):
     text = text.lower()
     if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت']):
@@ -59,13 +61,13 @@ def analyze_emotion(text):
 
 def aura_brain(user_input, person_name="عزیز از دست رفته", is_business=False):
     if is_business:
-        prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده (مثلاً پیشنهاد منو یا تخفیف)."
+        prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده."
     else:
-        prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی، دلسوزانه و انسانی بده. حداکثر ۳ جمله."
+        prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی و دلسوزانه بده. حداکثر ۳ جمله."
     
     try:
         url = f"https://text.pollinations.ai/{prompt}?model=openai"
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=15)
         if response.status_code == 200:
             return response.text.strip()
         else:
@@ -73,11 +75,12 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
     except:
         return "ارتباط با جهان دیگر برقرار نشد. لطفاً دوباره تلاش کنید."
 
+# ----------------- CSS -----------------
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Vazirmatn', Tahoma; background: radial-gradient(circle at center, #1a2a6c, #0d0d2b, #000); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; color: #fff; overflow-x: hidden; perspective: 1000px; }
-.glass-container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 40px; width: 100%; max-width: 600px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; z-index: 10; position: relative; overflow: hidden; transition: transform 0.1s ease-out; transform-style: preserve-3d; }
+.glass-container { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 40px; width: 100%; max-width: 600px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; z-index: 10; position: relative; overflow: hidden; }
 h1 { font-size: 2.5rem; margin-bottom: 20px; text-shadow: 0 0 20px #00ffcc; }
 input, select, textarea, button { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; font-family: 'Vazirmatn', Tahoma; outline: none; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
 button { cursor: pointer; font-weight: bold; background: #00ffcc; color: #000; transition: 0.3s; border-radius: 30px; }
@@ -101,6 +104,7 @@ a:hover { color: #fff; }
 .emotion-negative { background: #ff0080; color: #fff; }
 """
 
+# ----------------- قالب‌های HTML -----------------
 HTML_HOME = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """</style></head><body>
 <div class="secret-star" onclick="window.location.href='/login'" title="ورود مدیران">★</div>
@@ -122,7 +126,7 @@ HTML_FEEDBACK = """
 </style></head><body>
 <div class='glass-container'>
 <h1>آینه احساسی</h1>
-<p>امروز چه احساسی داری؟ (یا از خدمات ما چطور بودید؟)</p>
+<p>امروز چه احساسی داری؟</p>
 <form method='POST' enctype="multipart/form-data" class='feedback-box'>
 <div class='emoji-container'>
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😡')">😡</button>
@@ -132,89 +136,47 @@ HTML_FEEDBACK = """
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😍')">😍</button>
 </div>
 <input type='hidden' name='selected_emoji' id='selected_emoji' value=''>
-
-<p style="font-size:0.9rem; opacity:0.8; text-align:right;">(اختیاری) عکسی از خودت آپلود کن تا چهره‌ات را در آینده ببینی:</p>
+<p style="font-size:0.9rem; opacity:0.8; text-align:right;">(اختیاری) عکسی از خودت آپلود کن:</p>
 <input type='file' name='user_image' accept='image/*' style="background: rgba(255,255,255,0.05); border: 1px dashed #00ffcc; padding: 10px;">
-
 <textarea name='message' placeholder='هر چیزی که در دلت داری بنویس... (مثلاً نگران آینده‌ام)' style='background: rgba(0,0,0,0.3); height: 100px;'></textarea>
-
-<button type='submit' style='background: #00ffcc; font-size: 1.2rem;'>ارسال و دریافت پاسخ</button>
+<button type='submit' style='background: #00ffcc; font-size: 1.2rem;'>ارسال و دریافت پاسخ از آینده</button>
 </form>
 <a href='/'>BACK TO HOME</a>
 </div>
 <script>
 function selectEmoji(btn, emoji) {
-    const btns = document.querySelectorAll('.emoji-btn');
-    btns.forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    document.getElementById('selected_emoji').value = emoji;
+const btns = document.querySelectorAll('.emoji-btn');
+btns.forEach(b => b.classList.remove('selected'));
+btn.classList.add('selected');
+document.getElementById('selected_emoji').value = emoji;
 }
 </script>
 </body></html>
 """
 
-@app.route('/feedback', methods=['GET', 'POST'])
-def feedback():
-    if request.method == 'POST':
-        selected_emoji = request.form.get('selected_emoji', '')
-        message = request.form.get('message', '')
-        
-        if selected_emoji and not message:
-            message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
-        
-        if message:
-            emotion = analyze_emotion(message)
-            if selected_emoji:
-                if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
-                elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
+HTML_CAPSULE = """
+<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """</style></head><body>
+<div class='glass-container'>
+<h1 style="text-shadow: 0 0 20px #00ffcc;">تالار جاودانگی</h1>
+<p style="color:#00ffcc; margin-bottom: 20px;">عکسی از عزیز از دست رفته‌ات آپلود کن و با او حرف بزن...</p>
+<form method='POST' enctype="multipart/form-data">
+<input type='text' name='name' placeholder='نام عزیز شما' required style="background: rgba(255,255,255,0.05); border: 1px solid #00ffcc;">
+<input type='file' name='user_image' accept='image/*' style="background: rgba(255,255,255,0.05); border: 1px dashed #00ffcc; padding: 10px;">
+<textarea name='message' placeholder='سلام... دلم برایت تنگ شده...' required style="background: rgba(255,255,255,0.05); border: 1px solid #00ffcc;"></textarea>
+<button type='submit' style="box-shadow: 0 0 20px #00ffcc;">ارسال پیام به جهان دیگر</button>
+</form>
+<a href='/'>BACK TO HOME</a>
+</div>
+</body></html>
+"""
 
-            is_business = request.args.get('biz') == '1'
-            new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
-            db.session.add(new_f)
-            db.session.commit()
-
-            if current_user.is_authenticated:
-                current_user.points += 10
-                db.session.commit()
-
-# پردازش عکس (در حافظه مرورگر - ارسال به صورت Base64)
-            image_html = ""
-            if 'user_image' in request.files:
-                file = request.files['user_image']
-                if file and file.filename != '':
-                    img_data = base64.b64encode(file.read()).decode('utf-8')
-# نمایش عکس با افکت هولوگرافیک
-                    image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' style='border-radius: 50%; box-shadow: 0 0 50px #00ffcc; filter: blur(1px) grayscale(30%);'>"
-
-            if is_business:
-                if 'نارضایتی' in emotion:
-                    response = f"<h2 style='color:#ff0080;'>از اینکه نارضایتی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
-                else:
-                    response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
-            else:
-# دریافت پاسخ از هوش مصنوعی
-                ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
-
-# نمایش ویدیوی پس‌زمینه سینمایی (بدون شخصیت)
-                response = f"""
-                <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
-                {image_html}
-                <div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
-                """
-
-            return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
-
-    return HTML_FEEDBACK
 HTML_PORTAL = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
-body { background: radial-gradient(circle at center, #0b1a2a, #000); }
-.chat-box { max-height: 200px; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px;}
+.chat-box { max-height: 200px; overflow-y: auto; margin-bottom: 20px; padding: 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;}
 .postcard-section { background: rgba(0, 255, 204, 0.1); border: 1px dashed #00ffcc; border-radius: 15px; padding: 15px; margin-top: 20px; }
 </style></head><body>
-<audio autoplay loop style="display:none;"><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' type='audio/mpeg'></audio>
 <div class='glass-container'>
 <h1>پورتال خاطرات</h1>
-<p style='color:#fff; opacity:0.8;'>صدای محیط را حس کنید...</p>
 <div class="chat-box">
 {% for c in chats %}
 <div class='msg' style="border-left-color: #ff0080;"><b>YOU:</b> {{ c.user }}</div>
@@ -226,10 +188,10 @@ body { background: radial-gradient(circle at center, #0b1a2a, #000); }
 <button type='submit' style="box-shadow: 0 0 20px #00ffcc;">SEND</button>
 </form>
 <div class="postcard-section">
-<h3 style="color: #ffcc00; margin-bottom: 10px;">📸 ساخت کارت پستال از کافه ما</h3>
+<h3 style="color: #ffcc00;">📸 ساخت کارت پستال</h3>
 <form method='POST' action='/make-postcard' enctype="multipart/form-data">
 <input type='file' name='postcard_image' accept='image/*' required style="background: rgba(255,255,255,0.05); border: 1px solid #ffcc00;">
-<button type='submit' style="background: #ffcc00; color: #000; box-shadow: 0 0 20px #ffcc00;">ساخت کارت پستال</button>
+<button type='submit' style="background: #ffcc00; color: #000;">ساخت کارت پستال</button>
 </form>
 </div>
 <a href='/'>BACK TO HOME</a>
@@ -256,7 +218,7 @@ HTML_REGISTER = """
 <div class='glass-container'>
 <h1>ثبت کسب‌وکار</h1>
 <form method='POST'>
-<input type='text' name='name' placeholder='نام مجموعه (کافه، بانک...)' required>
+<input type='text' name='name' placeholder='نام مجموعه' required>
 <input type='text' name='username' placeholder='USERNAME' required>
 <input type='password' name='password' placeholder='PASSWORD' required>
 <button type='submit'>INIT</button>
@@ -267,10 +229,8 @@ HTML_REGISTER = """
 """
 
 HTML_DASHBOARD = """
-<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
-.dashboard-box { width: 100%; max-width: 800px; text-align: right; }
-</style></head><body>
-<div class='glass-container dashboard-box'>
+<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """</style></head><body>
+<div class='glass-container'>
 <h1 style='text-align:center;'>پنل مدیریت {{ name }}</h1>
 <div class='qr-section'>
 <h3>📱 QR کد اختصاصی کسب‌وکار شما</h3>
@@ -284,9 +244,6 @@ HTML_DASHBOARD = """
 <div class='feedback-card'>
 <span class='emotion-tag {% if "نارضایتی" in f.emotion %}emotion-negative{% endif %}'>{{ f.emotion }}</span>
 <p style='margin-top:10px;'>{{ f.message }}</p>
-{% if not f.resolved %}
-<a href='/resolve/{{ f.id }}' style='color:gold; font-size:12px;'>علامت‌گذاری حل شد</a>
-{% endif %}
 </div>
 {% endfor %}
 </div>
@@ -304,6 +261,7 @@ img.style.display = 'inline-block';
 </body></html>
 """
 
+# ----------------- مسیرهای Flask -----------------
 @app.route('/')
 def index():
     return HTML_HOME
@@ -315,7 +273,7 @@ def register():
         new_b = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
         db.session.add(new_b)
         db.session.commit()
-        return f"<h1 style='color:#00ffcc; text-align:center; margin-top:50px;'>ثبت‌نام موفق! کد ادمین شما: {code}</h1><a href='/login' style='display:block; text-align:center; color:white;'>ورود</a>"
+        return f"<h1 style='color:#00ffcc; text-align:center; margin-top:50px;'>ثبت‌نام موفق! کد: {code}</h1><a href='/login' style='display:block; text-align:center; color:white;'>ورود</a>"
     return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -337,35 +295,8 @@ def logout():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    today = date.today()
-    if current_user.last_login != today:
-        current_user.points += 20
-        current_user.last_login = today
-        db.session.commit()
-        current_user.level = (current_user.points // 100) + 1
-        db.session.commit()
-        
-# زنجیره فرماندهی
-    one_week_ago = datetime.utcnow() - timedelta(days=7)
-    unresolved = Feedback.query.filter_by(resolved=False, is_business=True).all()
-    for f in unresolved:
-        if f.created_at < one_week_ago:
-            if f.status == 'سطح ۱':
-                f.status = 'سطح ۲'
-            elif f.status == 'سطح ۲':
-                f.status = 'سطح ۳ (مدیر)'
-            db.session.commit()
-    
     feedbacks = Feedback.query.order_by(Feedback.id.desc()).all()
     return render_template_string(HTML_DASHBOARD, name=current_user.name, code=current_user.unique_code, feedbacks=feedbacks)
-
-@app.route('/resolve/<int:id>')
-@login_required
-def resolve(id):
-    f = Feedback.query.get_or_404(id)
-    f.resolved = True
-    db.session.commit()
-    return redirect(url_for('dashboard'))
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
@@ -375,7 +306,7 @@ def feedback():
         
         if selected_emoji and not message:
             message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
-        
+
         if message:
             emotion = analyze_emotion(message)
             if selected_emoji:
@@ -387,23 +318,26 @@ def feedback():
             db.session.add(new_f)
             db.session.commit()
             
-            if current_user.is_authenticated:
-                current_user.points += 10
-                db.session.commit()
-            
-            ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
+            image_html = ""
+            if 'user_image' in request.files:
+                file = request.files['user_image']
+                if file and file.filename != '':
+                    img_data = base64.b64encode(file.read()).decode('utf-8')
+                    image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image'>"
             
             if is_business:
                 if 'نارضایتی' in emotion:
-                    response = f"<h2 style='color:#ff0080;'>از اینکه ناراضی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
+                    response = f"<h2 style='color:#ff0080;'>متاسفیم!</h2><p>کد تخفیف: <b>OMNI50</b></p>"
                 else:
-                    response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
+                    response = f"<h2 style='color:#00ffcc;'>ممنون!</h2>"
             else:
+                ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
                 response = f"""
-<video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
-<div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
-"""
-                        
+                <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
+                {image_html}
+                <div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
+                """
+
             return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
 
     return HTML_FEEDBACK
@@ -422,26 +356,17 @@ def time_capsule():
                 image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image'>"
         
         if message:
-            if current_user.is_authenticated:
-                current_user.points += 10
-            db.session.commit()
-            
             ai_response = aura_brain(message, name, False)
-            
             return f"""
             <html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head>
-            <body class='angel-theme'>
+            <body>
             <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
             <div class='glass-container' style='max-width: 750px;'>
             <h1 style='color:#00ffcc;'>ارتباط برقرار شد</h1>
             {image_html}
-            <div class='msg' style='border-left-color: #00ffcc;'><b>شما:</b> {message}</div>
-            <div class='msg' style='border-left-color: #ffcc00; background: rgba(255,204,0,0.1);'>
-            <b>{name}:</b><br><br>
-            <span class='typing-effect'>{ai_response}</span>
-            </div>
+            <div class='msg'><b>شما:</b> {message}</div>
+            <div class='msg' style='background: rgba(255,204,0,0.1);'><b>{name}:</b><br><br><span class='typing-effect'>{ai_response}</span></div>
             <a href='/'>بازگشت</a>
-            <a href='/time-capsule' style='color:#ffcc00;'>ارسال پیام دیگر</a>
             </div>
             </body></html>
             """
@@ -455,14 +380,9 @@ def memory_portal():
         
         message = request.form.get('message', '')
         ai_response = aura_brain(message, "دوست قدیمی", False)
-        
+
         session['chats'].append({'user': message, 'ai': ai_response})
         session.modified = True
-        
-        if current_user.is_authenticated:
-            current_user.points += 5
-            db.session.commit()
-        
         return redirect(url_for('memory_portal'))
     
     return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
@@ -484,7 +404,6 @@ def make_postcard():
             <img src='data:image/jpeg;base64,{img_data}' style="max-width: 300px; border-radius: 5px;">
             <h3 style="color: #000; margin-top: 10px;">OMNI-PLATFORM</h3>
             </div>
-            <p style="margin-top: 20px; font-size: 0.9rem;">برای ذخیره، روی عکس کلیک راست کنید.</p>
             <a href='/memory-portal' style="color:#00ffcc;">بازگشت</a>
             </div>
             </body></html>

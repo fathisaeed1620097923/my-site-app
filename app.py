@@ -72,12 +72,12 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
         prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی و دلسوزانه بده. حداکثر ۳ جمله."
 
     try:
-         API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
+        API_URL = "https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta"
         # ⚠️ در خط زیر، به جای hf_کلید_خود_را_اینجا_بچسبانید، کلیدی که ساختی را پیست کن
-         headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
-         payload = {
-        "inputs": prompt,
-        "parameters": {"max_new_tokens": 100, "return_full_text": False}
+        headers = {"Authorization": f"Bearer {os.environ.get('HF_TOKEN')}"}
+        payload = {
+            "inputs": prompt,
+            "parameters": {"max_new_tokens": 100, "return_full_text": False}
         }
         response = requests.post(API_URL, headers=headers, json=payload, timeout=20)
         

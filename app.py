@@ -144,10 +144,10 @@ HTML_FEEDBACK = """
 </div>
 <script>
 function selectEmoji(btn, emoji) {
-const btns = document.querySelectorAll('.emoji-btn');
-btns.forEach(b => b.classList.remove('selected'));
-btn.classList.add('selected');
-document.getElementById('selected_emoji').value = emoji;
+    const btns = document.querySelectorAll('.emoji-btn');
+    btns.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('selected_emoji').value = emoji;
 }
 </script>
 </body></html>
@@ -155,56 +155,56 @@ document.getElementById('selected_emoji').value = emoji;
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-selected_emoji = request.form.get('selected_emoji', '')
-message = request.form.get('message', '')
+    if request.method == 'POST':
+        selected_emoji = request.form.get('selected_emoji', '')
+        message = request.form.get('message', '')
+        
+        if selected_emoji and not message:
+            message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
+        
+        if message:
+            emotion = analyze_emotion(message)
+            if selected_emoji:
+                if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
+                elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
 
-if selected_emoji and not message:
-message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
+            is_business = request.args.get('biz') == '1'
+            new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
+            db.session.add(new_f)
+            db.session.commit()
 
-if message:
-emotion = analyze_emotion(message)
-if selected_emoji:
-if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
-elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
-
-is_business = request.args.get('biz') == '1'
-new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
-db.session.add(new_f)
-db.session.commit()
-
-if current_user.is_authenticated:
-current_user.points += 10
-db.session.commit()
+            if current_user.is_authenticated:
+                current_user.points += 10
+                db.session.commit()
 
 # پردازش عکس (در حافظه مرورگر - ارسال به صورت Base64)
-image_html = ""
-if 'user_image' in request.files:
-file = request.files['user_image']
-if file and file.filename != '':
-img_data = base64.b64encode(file.read()).decode('utf-8')
+            image_html = ""
+            if 'user_image' in request.files:
+                file = request.files['user_image']
+                if file and file.filename != '':
+                    img_data = base64.b64encode(file.read()).decode('utf-8')
 # نمایش عکس با افکت هولوگرافیک
-image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' style='border-radius: 50%; box-shadow: 0 0 50px #00ffcc; filter: blur(1px) grayscale(30%);'>"
+                    image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' style='border-radius: 50%; box-shadow: 0 0 50px #00ffcc; filter: blur(1px) grayscale(30%);'>"
 
-if is_business:
-if 'نارضایتی' in emotion:
-response = f"<h2 style='color:#ff0080;'>از اینکه نارضایتی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
-else:
-response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
-else:
+            if is_business:
+                if 'نارضایتی' in emotion:
+                    response = f"<h2 style='color:#ff0080;'>از اینکه نارضایتی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
+                else:
+                    response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
+                else:
 # دریافت پاسخ از هوش مصنوعی
-ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
+                ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
 
 # نمایش ویدیوی پس‌زمینه سینمایی (بدون شخصیت)
-response = f"""
-<video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
-{image_html}
-<div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
-"""
+                response = f"""
+                <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
+                {image_html}
+                <div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
+                """
 
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
+            return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
 
-return HTML_FEEDBACK
+    return HTML_FEEDBACK
 HTML_PORTAL = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
 body { background: radial-gradient(circle at center, #0b1a2a, #000); }

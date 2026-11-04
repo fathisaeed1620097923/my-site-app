@@ -191,7 +191,7 @@ def feedback():
                     response = f"<h2 style='color:#ff0080;'>از اینکه نارضایتی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
                 else:
                     response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
-                else:
+            else:
 # دریافت پاسخ از هوش مصنوعی
                 ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
 

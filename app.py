@@ -79,7 +79,6 @@ def aura_brain(user_input, person_name="عزیز از دست رفته", is_busin
             "inputs": prompt,
             "parameters": {"max_new_tokens": 100, "return_full_text": False}
         }
-
         response = requests.post(API_URL, headers=headers, json=payload, timeout=20)
 
         if response.status_code == 200:

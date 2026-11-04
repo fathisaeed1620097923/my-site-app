@@ -15,7 +15,7 @@ app.config['SECRET_KEY'] = 'future-500-years'
 
 db_url = 'postgresql://myuser:5VAUU122WDEqj8UepCJypXIpdA8Vl8ip@dpg-dbi7boui0phs73d2ime0-a.oregon-postgres.render.com/mydb_ecw3'
 if db_url.startswith("postgres://"):
-db_url = db_url.replace("postgres://", "postgresql://", 1)
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -27,51 +27,51 @@ login_manager.login_view = 'login'
 
 # ----------------- مدل‌های دیتابیس -----------------
 class Business(UserMixin, db.Model):
-id = db.Column(db.Integer, primary_key=True)
-username = db.Column(db.String(100), unique=True, nullable=False)
-password = db.Column(db.String(200), nullable=False)
-name = db.Column(db.String(150), nullable=False)
-unique_code = db.Column(db.String(10), unique=True, nullable=False)
-points = db.Column(db.Integer, default=0)
-level = db.Column(db.Integer, default=1)
-last_login = db.Column(db.Date)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    name = db.Column(db.String(150), nullable=False)
+    unique_code = db.Column(db.String(10), unique=True, nullable=False)
+    points = db.Column(db.Integer, default=0)
+    level = db.Column(db.Integer, default=1)
+    last_login = db.Column(db.Date)
 
 class Feedback(db.Model):
-id = db.Column(db.Integer, primary_key=True)
-message = db.Column(db.Text, nullable=False)
-emotion = db.Column(db.String(50), nullable=False)
-created_at = db.Column(db.DateTime, default=datetime.utcnow)
-status = db.Column(db.String(20), default='سطح ۱')
-resolved = db.Column(db.Boolean, default=False)
-is_business = db.Column(db.Boolean, default=False)
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text, nullable=False)
+    emotion = db.Column(db.String(50), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    status = db.Column(db.String(20), default='سطح ۱')
+    resolved = db.Column(db.Boolean, default=False)
+    is_business = db.Column(db.Boolean, default=False)
 
 @login_manager.user_loader
 def load_user(user_id):
-return Business.query.get(int(user_id))
+    return Business.query.get(int(user_id))
 
 def analyze_emotion(text):
-text = text.lower()
-if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت']):
-return 'رضایت 😊'
-if any(w in text for w in ['غمگین', 'خسته', 'بد', 'ناراضی', 'عصبی', 'پیر', 'ترس']):
-return 'نارضایتی 😢'
-return 'خنثی 😐'
+    text = text.lower()
+    if any(w in text for w in ['خوشحال', 'عالی', 'شاد', 'خوب', 'رضایت']):
+        return 'رضایت 😊'
+    if any(w in text for w in ['غمگین', 'خسته', 'بد', 'ناراضی', 'عصبی', 'پیر', 'ترس']):
+        return 'نارضایتی 😢'
+    return 'خنثی 😐'
 
 def aura_brain(user_input, person_name="عزیز از دست رفته", is_business=False):
-if is_business:
-prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده (مثلاً پیشنهاد منو یا تخفیف)."
-else:
-prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی، دلسوزانه و انسانی بده. حداکثر ۳ جمله."
-
-try:
-url = f"https://text.pollinations.ai/{prompt}?model=openai"
-response = requests.get(url, timeout=10)
-if response.status_code == 200:
-return response.text.strip()
-else:
-return "ارتباط با جهان دیگر برقرار نشد. لطفاً دوباره تلاش کنید."
-except:
-return "ارتباط با جهان دیگر برقرار نشد. لطفاً دوباره تلاش کنید."
+    if is_business:
+        prompt = f"تو یک دستیار هوشمند کافه/هتل هستی. کاربر می‌گوید: {user_input}. یک پاسخ کوتاه، دوستانه و تجاری بده (مثلاً پیشنهاد منو یا تخفیف)."
+    else:
+        prompt = f"تو نسخه‌ی {person_name} هستی که از دنیای دیگر با کاربر صحبت می‌کنی. کاربر می‌گوید: {user_input}. یک پاسخ بسیار احساسی، عرفانی، دلسوزانه و انسانی بده. حداکثر ۳ جمله."
+    
+    try:
+        url = f"https://text.pollinations.ai/{prompt}?model=openai"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            return response.text.strip()
+        else:
+            return "ارتباط با جهان دیگر برقرار نشد. لطفاً دوباره تلاش کنید."
+    except:
+        return "ارتباط با جهان دیگر برقرار نشد. لطفاً دوباره تلاش کنید."
 
 CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;700&display=swap');
@@ -269,194 +269,194 @@ img.style.display = 'inline-block';
 
 @app.route('/')
 def index():
-return HTML_HOME
+    return HTML_HOME
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-if request.method == 'POST':
-code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-new_b = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
-db.session.add(new_b)
-db.session.commit()
-return f"<h1 style='color:#00ffcc; text-align:center; margin-top:50px;'>ثبت‌نام موفق! کد ادمین شما: {code}</h1><a href='/login' style='display:block; text-align:center; color:white;'>ورود</a>"
-return HTML_REGISTER
+    if request.method == 'POST':
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        new_b = Business(username=request.form['username'], password=generate_password_hash(request.form['password']), name=request.form['name'], unique_code=code)
+        db.session.add(new_b)
+        db.session.commit()
+        return f"<h1 style='color:#00ffcc; text-align:center; margin-top:50px;'>ثبت‌نام موفق! کد ادمین شما: {code}</h1><a href='/login' style='display:block; text-align:center; color:white;'>ورود</a>"
+    return HTML_REGISTER
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-if request.method == 'POST':
-user = Business.query.filter_by(username=request.form['username']).first()
-if user and check_password_hash(user.password, request.form['password']):
-login_user(user)
-return redirect(url_for('dashboard'))
-return "<h1 style='color:red; text-align:center;'>رمز اشتباه است.</h1>"
-return HTML_LOGIN
+    if request.method == 'POST':
+        user = Business.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        return "<h1 style='color:red; text-align:center;'>رمز اشتباه است.</h1>"
+    return HTML_LOGIN
 
 @app.route('/logout')
 @login_required
 def logout():
-logout_user()
-return redirect(url_for('index'))
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
-today = date.today()
-if current_user.last_login != today:
-current_user.points += 20
-current_user.last_login = today
-db.session.commit()
-current_user.level = (current_user.points // 100) + 1
-db.session.commit()
-
+    today = date.today()
+    if current_user.last_login != today:
+        current_user.points += 20
+        current_user.last_login = today
+        db.session.commit()
+        current_user.level = (current_user.points // 100) + 1
+        db.session.commit()
+        
 # زنجیره فرماندهی
-one_week_ago = datetime.utcnow() - timedelta(days=7)
-unresolved = Feedback.query.filter_by(resolved=False, is_business=True).all()
-for f in unresolved:
-if f.created_at < one_week_ago:
-if f.status == 'سطح ۱':
-f.status = 'سطح ۲'
-elif f.status == 'سطح ۲':
-f.status = 'سطح ۳ (مدیر)'
-db.session.commit()
-
-feedbacks = Feedback.query.order_by(Feedback.id.desc()).all()
-return render_template_string(HTML_DASHBOARD, name=current_user.name, code=current_user.unique_code, feedbacks=feedbacks)
+    one_week_ago = datetime.utcnow() - timedelta(days=7)
+    unresolved = Feedback.query.filter_by(resolved=False, is_business=True).all()
+    for f in unresolved:
+        if f.created_at < one_week_ago:
+            if f.status == 'سطح ۱':
+                f.status = 'سطح ۲'
+            elif f.status == 'سطح ۲':
+                f.status = 'سطح ۳ (مدیر)'
+            db.session.commit()
+    
+    feedbacks = Feedback.query.order_by(Feedback.id.desc()).all()
+    return render_template_string(HTML_DASHBOARD, name=current_user.name, code=current_user.unique_code, feedbacks=feedbacks)
 
 @app.route('/resolve/<int:id>')
 @login_required
 def resolve(id):
-f = Feedback.query.get_or_404(id)
-f.resolved = True
-db.session.commit()
-return redirect(url_for('dashboard'))
+    f = Feedback.query.get_or_404(id)
+    f.resolved = True
+    db.session.commit()
+    return redirect(url_for('dashboard'))
 
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-if request.method == 'POST':
-selected_emoji = request.form.get('selected_emoji', '')
-message = request.form.get('message', '')
-
-if selected_emoji and not message:
-message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
-
-if message:
-emotion = analyze_emotion(message)
-if selected_emoji:
-if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
-elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
-
-is_business = request.args.get('biz') == '1'
-new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
-db.session.add(new_f)
-db.session.commit()
-
-if current_user.is_authenticated:
-current_user.points += 10
-db.session.commit()
-
-ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
-
-if is_business:
-if 'نارضایتی' in emotion:
-response = f"<h2 style='color:#ff0080;'>از اینکه ناراضی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
-else:
-response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
-else:
-response = f"""
+    if request.method == 'POST':
+        selected_emoji = request.form.get('selected_emoji', '')
+        message = request.form.get('message', '')
+        
+        if selected_emoji and not message:
+            message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
+        
+        if message:
+            emotion = analyze_emotion(message)
+            if selected_emoji:
+                if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
+                elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
+            
+            is_business = request.args.get('biz') == '1'
+            new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
+            db.session.add(new_f)
+            db.session.commit()
+            
+            if current_user.is_authenticated:
+                current_user.points += 10
+                db.session.commit()
+            
+            ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
+            
+            if is_business:
+                if 'نارضایتی' in emotion:
+                    response = f"<h2 style='color:#ff0080;'>از اینکه ناراضی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
+                else:
+                    response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
+            else:
+                response = f"""
 <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
 <div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
 """
+                        
+            return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
 
-return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
-
-return HTML_FEEDBACK
+    return HTML_FEEDBACK
 
 @app.route('/time-capsule', methods=['GET', 'POST'])
 def time_capsule():
-if request.method == 'POST':
-name = request.form.get('name', 'عزیز از دست رفته')
-message = request.form.get('message', '')
-
-image_html = ""
-if 'user_image' in request.files:
-file = request.files['user_image']
-if file and file.filename != '':
-img_data = base64.b64encode(file.read()).decode('utf-8')
-image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image'>"
-
-if message:
-if current_user.is_authenticated:
-current_user.points += 10
-db.session.commit()
-
-ai_response = aura_brain(message, name, False)
-
-return f"""
-<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head>
-<body class='angel-theme'>
-<video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
-<div class='glass-container' style='max-width: 750px;'>
-<h1 style='color:#00ffcc;'>ارتباط برقرار شد</h1>
-{image_html}
-<div class='msg' style='border-left-color: #00ffcc;'><b>شما:</b> {message}</div>
-<div class='msg' style='border-left-color: #ffcc00; background: rgba(255,204,0,0.1);'>
-<b>{name}:</b><br><br>
-<span class='typing-effect'>{ai_response}</span>
-</div>
-<a href='/'>بازگشت</a>
-<a href='/time-capsule' style='color:#ffcc00;'>ارسال پیام دیگر</a>
-</div>
-</body></html>
-"""
-return HTML_CAPSULE
+    if request.method == 'POST':
+        name = request.form.get('name', 'عزیز از دست رفته')
+        message = request.form.get('message', '')
+        
+        image_html = ""
+        if 'user_image' in request.files:
+            file = request.files['user_image']
+            if file and file.filename != '':
+                img_data = base64.b64encode(file.read()).decode('utf-8')
+                image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image'>"
+        
+        if message:
+            if current_user.is_authenticated:
+                current_user.points += 10
+            db.session.commit()
+            
+            ai_response = aura_brain(message, name, False)
+            
+            return f"""
+            <html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head>
+            <body class='angel-theme'>
+            <video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
+            <div class='glass-container' style='max-width: 750px;'>
+            <h1 style='color:#00ffcc;'>ارتباط برقرار شد</h1>
+            {image_html}
+            <div class='msg' style='border-left-color: #00ffcc;'><b>شما:</b> {message}</div>
+            <div class='msg' style='border-left-color: #ffcc00; background: rgba(255,204,0,0.1);'>
+            <b>{name}:</b><br><br>
+            <span class='typing-effect'>{ai_response}</span>
+            </div>
+            <a href='/'>بازگشت</a>
+            <a href='/time-capsule' style='color:#ffcc00;'>ارسال پیام دیگر</a>
+            </div>
+            </body></html>
+            """
+    return HTML_CAPSULE
 
 @app.route('/memory-portal', methods=['GET', 'POST'])
 def memory_portal():
-if request.method == 'POST':
-if 'chats' not in session:
-session['chats'] = []
-
-message = request.form.get('message', '')
-ai_response = aura_brain(message, "دوست قدیمی", False)
-
-session['chats'].append({'user': message, 'ai': ai_response})
-session.modified = True
-
-if current_user.is_authenticated:
-current_user.points += 5
-db.session.commit()
-
-return redirect(url_for('memory_portal'))
-
-return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
+    if request.method == 'POST':
+        if 'chats' not in session:
+            session['chats'] = []
+        
+        message = request.form.get('message', '')
+        ai_response = aura_brain(message, "دوست قدیمی", False)
+        
+        session['chats'].append({'user': message, 'ai': ai_response})
+        session.modified = True
+        
+        if current_user.is_authenticated:
+            current_user.points += 5
+            db.session.commit()
+        
+        return redirect(url_for('memory_portal'))
+    
+    return render_template_string(HTML_PORTAL, chats=session.get('chats', []))
 
 @app.route('/make-postcard', methods=['POST'])
 def make_postcard():
-if 'postcard_image' in request.files:
-file = request.files['postcard_image']
-if file and file.filename != '':
-img_data = base64.b64encode(file.read()).decode('utf-8')
-return f"""
-<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}
-.postcard-frame {{ background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: inline-block; }}
-</style></head>
-<body style="background: #000; display: flex; justify-content: center; align-items: center; height: 100vh;">
-<div class='glass-container'>
-<h2 style="color:#00ffcc;">کارت پستال شما آماده شد!</h2>
-<div class='postcard-frame'>
-<img src='data:image/jpeg;base64,{img_data}' style="max-width: 300px; border-radius: 5px;">
-<h3 style="color: #000; margin-top: 10px;">OMNI-PLATFORM</h3>
-</div>
-<p style="margin-top: 20px; font-size: 0.9rem;">برای ذخیره، روی عکس کلیک راست کنید.</p>
-<a href='/memory-portal' style="color:#00ffcc;">بازگشت</a>
-</div>
-</body></html>
-"""
-return redirect(url_for('memory_portal'))
+    if 'postcard_image' in request.files:
+        file = request.files['postcard_image']
+        if file and file.filename != '':
+            img_data = base64.b64encode(file.read()).decode('utf-8')
+            return f"""
+            <html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}
+            .postcard-frame {{ background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); display: inline-block; }}
+            </style></head>
+            <body style="background: #000; display: flex; justify-content: center; align-items: center; height: 100vh;">
+            <div class='glass-container'>
+            <h2 style="color:#00ffcc;">کارت پستال شما آماده شد!</h2>
+            <div class='postcard-frame'>
+            <img src='data:image/jpeg;base64,{img_data}' style="max-width: 300px; border-radius: 5px;">
+            <h3 style="color: #000; margin-top: 10px;">OMNI-PLATFORM</h3>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem;">برای ذخیره، روی عکس کلیک راست کنید.</p>
+            <a href='/memory-portal' style="color:#00ffcc;">بازگشت</a>
+            </div>
+            </body></html>
+            """
+    return redirect(url_for('memory_portal'))
 
 with app.app_context():
-db.create_all()
+    db.create_all()
 
 if __name__ == '__main__':
-port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

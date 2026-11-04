@@ -115,7 +115,6 @@ HTML_HOME = """
 </body></html>
 """
 
-
 HTML_FEEDBACK = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
 .feedback-box { display: flex; flex-direction: column; gap: 20px; }
@@ -124,7 +123,7 @@ HTML_FEEDBACK = """
 <div class='glass-container'>
 <h1>آینه احساسی</h1>
 <p>امروز چه احساسی داری؟ (یا از خدمات ما چطور بودید؟)</p>
-<form method='POST' class='feedback-box'>
+<form method='POST' enctype="multipart/form-data" class='feedback-box'>
 <div class='emoji-container'>
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😡')">😡</button>
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '☹️')">☹️</button>
@@ -133,7 +132,12 @@ HTML_FEEDBACK = """
 <button type='button' class='emoji-btn' onclick="selectEmoji(this, '😍')">😍</button>
 </div>
 <input type='hidden' name='selected_emoji' id='selected_emoji' value=''>
-<textarea name='message' placeholder='هر چیزی که در دلت داری بنویس... (مثلاً نگران آینده‌ام یا از خدمات راضی بودم)' required style='background: rgba(0,0,0,0.3); height: 120px;'></textarea>
+
+<p style="font-size:0.9rem; opacity:0.8; text-align:right;">(اختیاری) عکسی از خودت آپلود کن تا چهره‌ات را در آینده ببینی:</p>
+<input type='file' name='user_image' accept='image/*' style="background: rgba(255,255,255,0.05); border: 1px dashed #00ffcc; padding: 10px;">
+
+<textarea name='message' placeholder='هر چیزی که در دلت داری بنویس... (مثلاً نگران آینده‌ام)' style='background: rgba(0,0,0,0.3); height: 100px;'></textarea>
+
 <button type='submit' style='background: #00ffcc; font-size: 1.2rem;'>ارسال و دریافت پاسخ</button>
 </form>
 <a href='/'>BACK TO HOME</a>
@@ -149,26 +153,58 @@ document.getElementById('selected_emoji').value = emoji;
 </body></html>
 """
 
-HTML_CAPSULE = """
-<!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
-.aurora-bg { background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #000 100%); }
-</style></head><body class='aurora-bg'>
-<audio autoplay loop style="display:none;"><source src='https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' type='audio/mpeg'></audio>
-<div class='glass-container'>
-<h1 style="text-shadow: 0 0 20px #00ffcc;">تالار جاودانگی</h1>
-<p style="color:#00ffcc; margin-bottom: 20px;">عکسی از عزیز از دست رفته‌ات آپلود کن و با او حرف بزن...</p>
-<form method='POST' enctype="multipart/form-data">
-<input type='text' name='name' placeholder='نام عزیز شما' required style="background: rgba(255,255,255,0.05); border: 1px solid #00ffcc;">
-<p style="font-size:0.8rem; opacity:0.7; text-align:right;">(اختیاری) آپلود عکس:</p>
-<input type='file' name='user_image' accept='image/*' style="background: rgba(255,255,255,0.05); border: 1px dashed #00ffcc; padding: 10px;">
-<textarea name='message' placeholder='سلام... دلم برایت تنگ شده...' required style="background: rgba(255,255,255,0.05); border: 1px solid #00ffcc;"></textarea>
-<button type='submit' style="box-shadow: 0 0 20px #00ffcc;">ارسال پیام به جهان دیگر</button>
-</form>
-<a href='/'>BACK TO HOME</a>
-</div>
-</body></html>
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+if request.method == 'POST':
+selected_emoji = request.form.get('selected_emoji', '')
+message = request.form.get('message', '')
+
+if selected_emoji and not message:
+message = f"مشتری با ایموجی {selected_emoji} پاسخ داد."
+
+if message:
+emotion = analyze_emotion(message)
+if selected_emoji:
+if selected_emoji in ['😡', '☹️']: emotion = 'نارضایتی 😢'
+elif selected_emoji in ['😍', '🙂']: emotion = 'رضایت 😊'
+
+is_business = request.args.get('biz') == '1'
+new_f = Feedback(message=message, emotion=emotion, is_business=is_business)
+db.session.add(new_f)
+db.session.commit()
+
+if current_user.is_authenticated:
+current_user.points += 10
+db.session.commit()
+
+# پردازش عکس (در حافظه مرورگر - ارسال به صورت Base64)
+image_html = ""
+if 'user_image' in request.files:
+file = request.files['user_image']
+if file and file.filename != '':
+img_data = base64.b64encode(file.read()).decode('utf-8')
+# نمایش عکس با افکت هولوگرافیک
+image_html = f"<img src='data:image/jpeg;base64,{img_data}' class='future-image' style='border-radius: 50%; box-shadow: 0 0 50px #00ffcc; filter: blur(1px) grayscale(30%);'>"
+
+if is_business:
+if 'نارضایتی' in emotion:
+response = f"<h2 style='color:#ff0080;'>از اینکه نارضایتی بودید متاسفیم!</h2><p>کد تخفیف ویژه شما: <b>OMNI50</b></p>"
+else:
+response = f"<h2 style='color:#00ffcc;'>ممنون از نظر شما!</h2>"
+else:
+# دریافت پاسخ از هوش مصنوعی
+ai_response = aura_brain(message, "نسخه ۲۰ سال بعد شما", is_business)
+
+# نمایش ویدیوی پس‌زمینه سینمایی (بدون شخصیت)
+response = f"""
+<video autoplay loop muted class='bg-video'><source src='https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4' type='video/mp4'></video>
+{image_html}
+<div class='msg'><b>پیام از آینده:</b><br><span class='typing-effect'>{ai_response}</span></div>
 """
 
+return f"<html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>{CSS}</style></head><body><div class='glass-container'>{response}<a href='/'>بازگشت</a></div></body></html>"
+
+return HTML_FEEDBACK
 HTML_PORTAL = """
 <!DOCTYPE html><html lang='fa' dir='rtl'><head><meta charset='UTF-8'><style>""" + CSS + """
 body { background: radial-gradient(circle at center, #0b1a2a, #000); }
